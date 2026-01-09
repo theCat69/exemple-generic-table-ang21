@@ -1,15 +1,7 @@
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
-       matSort #sort="matSort">
-  <!-- Basic column: name is used for header label AND data property -->
-  <app-column prop="name" label="name"></app-column>
-  <app-column prop="position" label="position"></app-column>
+>
+  <ng-content></ng-content>
 
-  <!-- Name doesn't match the data property (or transform needed); define a custom data accessor -->
-  <app-column prop="weight" label="weight"></app-column>
-
-  <!-- Name doesn't match desired header text; define a custom label -->
-  <app-column prop="symbol" label="symbol"></app-column>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let data; columns: displayedColumns;"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+  <tr mat-row *matRowDef="let data; columns: displayedColumns();"></tr>
 </table>

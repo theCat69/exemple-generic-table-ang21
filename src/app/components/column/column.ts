@@ -1,52 +1,38 @@
-import {Component, HostBinding, Input, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
-import {
-  MatCellDef,
-  MatColumnDef,
-  MatFooterCellDef,
-  MatHeaderCellDef,
-  MatTable,
-  MatTableModule
-} from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort';
+import {Component, ContentChild, input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {MatCellDef, MatColumnDef, MatFooterCellDef, MatHeaderCellDef, MatTableModule} from '@angular/material/table';
+import {NgTemplateOutlet} from '@angular/common';
 
 @Component({
   selector: 'app-column',
-  imports: [MatTableModule, MatSortModule],
+  imports: [MatTableModule, NgTemplateOutlet],
   templateUrl: './column.html',
   styleUrl: './column.scss',
+  host: {
+    'class': 'simple-column cdk-visually-hidden',
+    '[attr.ariaHidden]': 'true',
+  }
 })
-export class Column<T> implements OnInit, OnDestroy {
+export class Column<T> implements OnInit {
   /** Column name that should be used to reference this column. */
-  @Input() prop = '';
-  @Input() label: string | undefined;
+  prop = input.required<string>();
+  label = input<string>();
+  styleHeaderBgColor = input<string>('red');
 
-  constructor(@Optional() public table: MatTable<unknown>) {}
+  @ViewChild(MatColumnDef, { static: true }) public columnDef!: MatColumnDef;
+  @ViewChild(MatCellDef, { static: true }) public cellDef!: MatCellDef;
+  @ViewChild(MatHeaderCellDef, { static: true }) public headerCellDef!: MatHeaderCellDef;
+  @ViewChild(MatFooterCellDef, { static: true }) public footerCellDef!: MatFooterCellDef;
 
-  @HostBinding('attr.ariaHidden') ariaHidden!: true;
-  @HostBinding('class') classes!: 'column-template cdk-visually-hidden';
-
-  @ViewChild(MatColumnDef, { static: true }) columnDef!: MatColumnDef;
-  @ViewChild(MatCellDef, { static: true }) cellDef!: MatCellDef;
-  @ViewChild(MatHeaderCellDef, { static: true }) headerCellDef!: MatHeaderCellDef;
-  @ViewChild(MatFooterCellDef, { static: true }) footerCellDef!: MatFooterCellDef;
+  @ContentChild(TemplateRef, { static: true })
+  cellTemplate!: TemplateRef<{ $implicit: T }>;
 
   ngOnInit(): void {
-    if (this.table && this.columnDef) {
-      this.columnDef.name = this.prop;
+    if (this.columnDef) {
+      this.columnDef.name = this.prop();
       this.columnDef.cell = this.cellDef;
       this.columnDef.headerCell = this.headerCellDef;
       this.columnDef.footerCell = this.footerCellDef;
-      this.table.addColumnDef(this.columnDef);
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.table) {
-      this.table.removeColumnDef(this.columnDef);
-    }
-  }
-
-  capitalize(value: string): string {
-    return value.charAt(0).toUpperCase() + value.slice(1);
-  }
 }

@@ -1,1 +1,28 @@
-<app-table/>
+<app-table [datas]="elementData">
+  <!-- Basic column: name is used for header label AND data property -->
+  <app-column prop="position" label="position">
+    <ng-template let-elem>
+      {{elem.position}}
+    </ng-template>
+  </app-column>
+  <app-column prop="name" label="name">
+    <ng-template let-elem>
+      {{elem.name}}
+    </ng-template>
+  </app-column>
+  <app-column prop="weight|symbol" label="weight|symbol" styleHeaderBgColor="green">
+    <ng-template let-elem>
+      <div [style]="{'background-color': 'blue'}">
+        {{elem.weight}}
+      </div>
+      <div>
+        {{elem.symbol}}
+      </div>
+    </ng-template>
+  </app-column>
+<!--  <app-column prop="symbol" label="symbol">-->
+<!--    <ng-template let-elem>-->
+<!--      {{elem.symbol}}-->
+<!--    </ng-template>-->
+<!--  </app-column>-->
+</app-table>
