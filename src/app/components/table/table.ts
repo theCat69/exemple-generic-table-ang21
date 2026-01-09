@@ -43,7 +43,6 @@ export class Table<T> implements AfterViewInit, AfterContentInit, OnInit {
       this.table.addColumnDef(col.columnDef);
     });
     this.displayedColumns.set(this.columns.map(c => c.prop()));
-    this.table.renderRows();
   }
 
   ngAfterViewInit() {
