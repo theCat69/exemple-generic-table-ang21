@@ -1,6 +1,6 @@
-import {Component, ContentChild, input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {MatCellDef, MatColumnDef, MatFooterCellDef, MatHeaderCellDef, MatTableModule} from '@angular/material/table';
-import {NgTemplateOutlet} from '@angular/common';
+import { ChangeDetectionStrategy, Component, ContentChild, input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatCellDef, MatColumnDef, MatFooterCellDef, MatHeaderCellDef, MatTableModule } from '@angular/material/table';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-column',
@@ -10,7 +10,8 @@ import {NgTemplateOutlet} from '@angular/common';
   host: {
     'class': 'simple-column cdk-visually-hidden',
     '[attr.ariaHidden]': 'true',
-  }
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Column<T> implements OnInit {
   /** Column name that should be used to reference this column. */

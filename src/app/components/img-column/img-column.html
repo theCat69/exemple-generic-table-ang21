@@ -1,0 +1,22 @@
+<ng-container [matColumnDef]="prop()"
+>
+  <th mat-header-cell *matHeaderCellDef
+      [style.background-color]="styleHeaderBgColor()"
+  >
+    <span > {{ label() ?? prop() }}</span>
+  </th>
+  <td mat-cell *matCellDef="let row "
+      [style.padding]="cellPadding()"
+  >
+    @if(cellTemplate) {
+      <ng-container
+        *ngTemplateOutlet="cellTemplate; context: { $implicit: row }"
+      >
+      </ng-container>
+    }
+    @else {
+      {{ row[prop()] }}
+    }
+  </td>
+</ng-container>
+

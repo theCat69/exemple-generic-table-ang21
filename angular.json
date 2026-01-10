@@ -74,5 +74,10 @@
         }
       }
     }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "changeDetection": "OnPush"
+    }
   }
 }
