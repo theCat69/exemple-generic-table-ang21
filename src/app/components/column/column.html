@@ -6,6 +6,7 @@
       cdkDrag
       cdkDragLockAxis="x"
       (cdkDragStarted)="startedDrag($event)"
+      [cdkDragData]="prop()"
   >
       <!-- [cdkDragData]="{ name: prop() }" -->
     <!-- <span class="drag-handle" cdkDragHandle> -->

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ContentChild, input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatCellDef, MatColumnDef, MatFooterCellDef, MatHeaderCellDef, MatTableModule } from '@angular/material/table';
 import { NgTemplateOutlet } from '@angular/common';
-import { CdkDragDrop, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-column',
@@ -27,6 +27,7 @@ export class Column<T> implements OnInit {
   @ViewChild(MatCellDef, { static: true }) public cellDef!: MatCellDef;
   @ViewChild(MatHeaderCellDef, { static: true }) public headerCellDef!: MatHeaderCellDef;
   @ViewChild(MatFooterCellDef, { static: true }) public footerCellDef!: MatFooterCellDef;
+  @ViewChild(CdkDrag) dragDirective!: CdkDrag;
 
   @ContentChild(TemplateRef, { static: true })
   cellTemplate!: TemplateRef<{ $implicit: T }>;
