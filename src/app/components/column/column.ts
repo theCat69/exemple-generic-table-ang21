@@ -1,18 +1,17 @@
 import { ChangeDetectionStrategy, Component, ContentChild, input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatCellDef, MatColumnDef, MatFooterCellDef, MatHeaderCellDef, MatTableModule } from '@angular/material/table';
 import { NgTemplateOutlet } from '@angular/common';
-import { CdkDrag, CdkDragDrop, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
-import { MatTabsModule } from '@angular/material/tabs';
+import { CdkDragDrop, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-column',
-  imports: [MatTableModule, NgTemplateOutlet, DragDropModule, MatTabsModule],
+  imports: [MatTableModule, NgTemplateOutlet, DragDropModule],
   templateUrl: './column.html',
   styleUrl: './column.scss',
-  // host: {
-  //   'class': 'simple-column cdk-visually-hidden',
-  //   '[attr.ariaHidden]': 'true',
-  // },
+  host: {
+    'class': 'simple-column cdk-visually-hidden',
+    '[attr.ariaHidden]': 'true',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Column<T> implements OnInit {

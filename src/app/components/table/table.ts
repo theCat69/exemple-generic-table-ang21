@@ -12,11 +12,11 @@ import {
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Column } from '../column/column';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule, MatPaginatorModule, DragDropModule],
+  imports: [MatTableModule, MatPaginatorModule, DragDropModule, CdkDropList],
   templateUrl: './table.html',
   styleUrl: './table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -31,7 +31,6 @@ export class Table<T> implements AfterContentInit {
   @ContentChildren(Column) columns!: QueryList<Column<T>>;
 
   constructor() {
-
     effect(() => {
       this.dataSource.data = this.datas();
     });
@@ -70,7 +69,7 @@ export class Table<T> implements AfterContentInit {
     console.log(event);
   }
 
-  dropList(event: CdkDragDrop<string[]>) {
+  dropListEvent(event: CdkDragDrop<string[]>) {
     console.log("dropped");
     console.log(event);
   }

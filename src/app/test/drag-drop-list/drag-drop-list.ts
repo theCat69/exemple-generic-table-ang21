@@ -1,9 +1,9 @@
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-drag-drop-list',
-  imports: [CdkDropList, CdkDrag],
+  imports: [DragDropModule],
   templateUrl: './drag-drop-list.html',
   styleUrl: './drag-drop-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
