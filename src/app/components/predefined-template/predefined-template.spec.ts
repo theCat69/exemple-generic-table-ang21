@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImgColumn } from './img-column';
+import { PredefinedTemplate } from './predefined-template';
 
-describe('ImgColumn', () => {
-  let component: ImgColumn;
-  let fixture: ComponentFixture<ImgColumn>;
+describe('PredefinedTemplate', () => {
+  let component: PredefinedTemplate;
+  let fixture: ComponentFixture<PredefinedTemplate>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ImgColumn]
+      imports: [PredefinedTemplate]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ImgColumn);
+    fixture = TestBed.createComponent(PredefinedTemplate);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

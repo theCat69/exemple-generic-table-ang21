@@ -1,6 +1,5 @@
 import {
   AfterContentInit,
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
@@ -13,24 +12,29 @@ import {
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Column } from '../column/column';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatButtonModule } from '@angular/material/button';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule, MatPaginatorModule, DragDropModule, CdkDropList],
+  imports: [MatTableModule, MatPaginatorModule, DragDropModule, CdkDropList, MatButtonModule, NgTemplateOutlet],
   templateUrl: './table.html',
   styleUrl: './table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Table<T> implements AfterContentInit, AfterViewInit {
+export class Table<T> implements AfterContentInit {
+
   displayedColumns = signal<string[]>([]);
+  columnsToDisplayColumns: Map<string, Column<T>> = new Map();
+
   datas = input.required<T[]>();
   dataSource: MatTableDataSource<T> = new MatTableDataSource<T>();
 
-  @ViewChild(MatTable, { static: true }) table!: MatTable<T>;
-  @ViewChild(CdkDropList) dropList!: CdkDropList;
-
-  @ContentChildren(Column) columns!: QueryList<Column<T>>;
+  @ViewChild(MatTable, { static: true })
+  table!: MatTable<T>;
+  @ContentChildren(Column)
+  columns!: QueryList<Column<T>>;
 
   constructor() {
     effect(() => {
@@ -40,66 +44,23 @@ export class Table<T> implements AfterContentInit, AfterViewInit {
 
   ngAfterContentInit() {
     this.columns.forEach(col => {
-      this.table.addColumnDef(col.columnDef);
-    });
+      this.columnsToDisplayColumns.set(col.prop(), col);
+    })
     this.displayedColumns.set(this.columns.map(c => c.prop()));
-    setTimeout(() => {
-      const headerRow = document.querySelector('mat-header-row');
-      const headerCells = document.querySelectorAll('mat-header-cell');
-      console.log("Header row:", headerRow);
-      console.log("Header cells:", headerCells);
-      console.log("Has cdkDropList?", headerRow?.hasAttribute('cdkdroplist'));
-      console.log("Cells with cdkDrag?", Array.from(headerCells).map(c => c.hasAttribute('cdkdrag')));
-    }, 1000);
-  }
-
-  ngAfterViewInit() {
-    const draggables: CdkDrag[] = [];
-    this.columns.forEach(col => {
-      if (col.dragDirective) {
-        draggables.push(col.dragDirective);
-      }
-    });
-
-    if (this.dropList && draggables.length > 0) {
-      console.log('Connecting', draggables.length, 'draggables to drop list');
-      // Manually register each drag with the drop list
-      draggables.forEach(drag => {
-        this.dropList.addItem(drag);
-        drag._dragRef._withDropContainer(this.dropList._dropListRef);
-      });
-      // this.dropList.r;
-    }
   }
 
   onPageChange(event: PageEvent) {
     console.log(event);
   }
 
-  entered(event: any) {
-    console.log(event);
-  }
-
   dropColumn(event: CdkDragDrop<string[]>) {
-    console.log('drop column');
-    console.log('event');
-    this.displayedColumns.update(() => {
+    this.displayedColumns.update(cols => {
       moveItemInArray(
-        event.container.data,
+        cols,
         event.previousIndex,
         event.currentIndex
       );
-      return [...event.container.data];
-    })
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    console.log("dropped");
-    console.log(event);
-  }
-
-  dropListEvent(event: CdkDragDrop<string[]>) {
-    console.log("dropped");
-    console.log(event);
+      return cols;
+    });
   }
 }

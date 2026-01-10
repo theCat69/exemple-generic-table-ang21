@@ -1,5 +1,3 @@
-<app-drag-drop-list/>
-
 <app-table [datas]="elementData">
   <app-column prop="name" label="NameLabel" cellPadding="0">
     <ng-template let-elem>
@@ -35,5 +33,5 @@
     </ng-template>
   </app-column>
 
-  <app-img-column prop="symbol" />
+  <app-predefined-template prop="symbol" />
 </app-table>
