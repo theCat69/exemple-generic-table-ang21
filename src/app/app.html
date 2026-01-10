@@ -1,28 +1,37 @@
 <app-table [datas]="elementData">
-  <!-- Basic column: name is used for header label AND data property -->
-  <app-column prop="position">
-    <ng-template let-elem>
-      {{elem.position}}
-    </ng-template>
-  </app-column>
-  <app-column prop="name" label="NameLabel">
+  <app-column prop="name" label="NameLabel" cellPadding="0">
     <ng-template let-elem>
       {{elem.name}}
     </ng-template>
   </app-column>
+
+  <app-column prop="position" />
+
   <app-column prop="weight|symbol" styleHeaderBgColor="green">
     <ng-template let-elem>
-      <div [style]="{'background-color': 'blue'}">
-        {{elem.weight}}
-      </div>
-      <div>
-        {{elem.symbol}}
+      <div class="flex-container">
+        <div [style]="{'background-color': 'blue'}">
+          {{elem.weight}}
+        </div>
+        <div>
+          {{elem.symbol}}
+        </div>
       </div>
     </ng-template>
   </app-column>
-<!--  <app-column prop="symbol" label="symbol">-->
-<!--    <ng-template let-elem>-->
-<!--      {{elem.symbol}}-->
-<!--    </ng-template>-->
-<!--  </app-column>-->
+
+  <app-column prop="action" styleHeaderBgColor="cyan">
+    <ng-template let-elem>
+      <div class="flex-container">
+        <button
+          mat-button
+          (click)="myAction(elem)"
+        >
+          action !
+        </button>
+      </div>
+    </ng-template>
+  </app-column>
+
+  <app-column prop="symbol" />
 </app-table>

@@ -1,14 +1,21 @@
-<ng-container [matColumnDef]="prop()">
+<ng-container [matColumnDef]="prop()"
+>
   <th mat-header-cell *matHeaderCellDef
       [style.background-color]="styleHeaderBgColor()"
   >
     <span > {{ label() ?? prop() }}</span>
   </th>
-  <td mat-cell *matCellDef="let row"
+  <td mat-cell *matCellDef="let row "
+      [style.padding]="cellPadding()"
   >
-    <ng-container
-      *ngTemplateOutlet="cellTemplate; context: { $implicit: row }"
-    >
-    </ng-container>
+    @if(cellTemplate) {
+      <ng-container
+        *ngTemplateOutlet="cellTemplate; context: { $implicit: row }"
+      >
+      </ng-container>
+    }
+    @else {
+      {{ row[prop()] }}
+    }
   </td>
 </ng-container>

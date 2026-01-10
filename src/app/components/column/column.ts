@@ -18,6 +18,9 @@ export class Column<T> implements OnInit {
   label = input<string>();
   styleHeaderBgColor = input<string>('red');
 
+  //overridable styles for columns
+  cellPadding = input<string>();
+
   @ViewChild(MatColumnDef, { static: true }) public columnDef!: MatColumnDef;
   @ViewChild(MatCellDef, { static: true }) public cellDef!: MatCellDef;
   @ViewChild(MatHeaderCellDef, { static: true }) public headerCellDef!: MatHeaderCellDef;

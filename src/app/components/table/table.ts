@@ -12,14 +12,15 @@ import {
 } from '@angular/core';
 import {MatTable, MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {Column} from '../column/column';
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule],
+  imports: [MatTableModule, MatPaginatorModule],
   templateUrl: './table.html',
   styleUrl: './table.scss',
 })
-export class Table<T> implements AfterViewInit, AfterContentInit, OnInit {
+export class Table<T> implements AfterContentInit {
   displayedColumns = signal<string[]>([]);
   datas = input.required<T[]>();
   dataSource: MatTableDataSource<T> = new MatTableDataSource<T>();
@@ -34,10 +35,6 @@ export class Table<T> implements AfterViewInit, AfterContentInit, OnInit {
     });
   }
 
-  ngOnInit() {
-    console.log('onInit');
-  }
-
   ngAfterContentInit() {
     this.columns.forEach(col => {
       this.table.addColumnDef(col.columnDef);
@@ -45,7 +42,7 @@ export class Table<T> implements AfterViewInit, AfterContentInit, OnInit {
     this.displayedColumns.set(this.columns.map(c => c.prop()));
   }
 
-  ngAfterViewInit() {
-    console.log('afterViewInit');
+  onPageChange(event: PageEvent) {
+    console.log(event);
   }
 }

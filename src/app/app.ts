@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Table} from './components/table/table';
 import {Column} from './components/column/column';
+import {MatButtonModule} from '@angular/material/button';
 
 export interface PeriodicElement {
   name: string;
@@ -11,7 +12,7 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-root',
-  imports: [Table, Column],
+  imports: [Table, Column, MatButtonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -28,4 +29,12 @@ export class App {
     {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
     {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
   ];
+
+  tableAction(elements: PeriodicElement[]) {
+    console.log('elements', elements);
+  }
+
+  myAction(element: PeriodicElement) {
+    console.log('element', element);
+  }
 }
