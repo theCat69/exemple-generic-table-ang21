@@ -1,17 +1,18 @@
 import { ChangeDetectionStrategy, Component, ContentChild, input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CdkDragDrop, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatCellDef, MatColumnDef, MatFooterCellDef, MatHeaderCellDef, MatTableModule } from '@angular/material/table';
 import { NgTemplateOutlet } from '@angular/common';
+import { CdkDrag, CdkDragDrop, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-column',
-  imports: [MatTableModule, DragDropModule, NgTemplateOutlet],
+  imports: [MatTableModule, NgTemplateOutlet, DragDropModule, MatTabsModule],
   templateUrl: './column.html',
   styleUrl: './column.scss',
-  host: {
-    'class': 'simple-column cdk-visually-hidden',
-    '[attr.ariaHidden]': 'true',
-  },
+  // host: {
+  //   'class': 'simple-column cdk-visually-hidden',
+  //   '[attr.ariaHidden]': 'true',
+  // },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Column<T> implements OnInit {
@@ -27,10 +28,10 @@ export class Column<T> implements OnInit {
   @ViewChild(MatCellDef, { static: true }) public cellDef!: MatCellDef;
   @ViewChild(MatHeaderCellDef, { static: true }) public headerCellDef!: MatHeaderCellDef;
   @ViewChild(MatFooterCellDef, { static: true }) public footerCellDef!: MatFooterCellDef;
-  //
+
   @ContentChild(TemplateRef, { static: true })
   cellTemplate!: TemplateRef<{ $implicit: T }>;
-  //
+
   ngOnInit(): void {
     if (this.columnDef) {
       this.columnDef.name = this.prop();
