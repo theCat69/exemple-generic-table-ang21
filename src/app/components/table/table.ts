@@ -1,12 +1,10 @@
 import {
   AfterContentInit,
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
   effect,
   input,
-  OnInit,
   QueryList,
   signal,
   ViewChild
@@ -14,10 +12,11 @@ import {
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Column } from '../column/column';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule, MatPaginatorModule],
+  imports: [MatTableModule, MatPaginatorModule, DragDropModule],
   templateUrl: './table.html',
   styleUrl: './table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -32,6 +31,7 @@ export class Table<T> implements AfterContentInit {
   @ContentChildren(Column) columns!: QueryList<Column<T>>;
 
   constructor() {
+
     effect(() => {
       this.dataSource.data = this.datas();
     });
@@ -45,6 +45,33 @@ export class Table<T> implements AfterContentInit {
   }
 
   onPageChange(event: PageEvent) {
+    console.log(event);
+  }
+
+  entered(event: any) {
+    console.log(event);
+  }
+
+  dropColumn(event: CdkDragDrop<string[]>) {
+    console.log('drop column');
+    console.log('event');
+    this.displayedColumns.update(() => {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+      return [...event.container.data];
+    })
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log("dropped");
+    console.log(event);
+  }
+
+  dropList(event: CdkDragDrop<string[]>) {
+    console.log("dropped");
     console.log(event);
   }
 }

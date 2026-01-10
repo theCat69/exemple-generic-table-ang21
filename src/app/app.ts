@@ -3,6 +3,7 @@ import { Table } from './components/table/table';
 import { Column } from './components/column/column';
 import { MatButtonModule } from '@angular/material/button';
 import { ImgColumn } from "./components/img-column/img-column";
+import { DragDropList } from './test/drag-drop-list/drag-drop-list';
 
 export interface PeriodicElement {
   name: string;
@@ -13,7 +14,7 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-root',
-  imports: [Table, Column, MatButtonModule, ImgColumn],
+  imports: [Table, Column, MatButtonModule, ImgColumn, DragDropList],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

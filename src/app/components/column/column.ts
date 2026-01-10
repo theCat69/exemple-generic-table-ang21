@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, ContentChild, input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { CdkDragDrop, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatCellDef, MatColumnDef, MatFooterCellDef, MatHeaderCellDef, MatTableModule } from '@angular/material/table';
 import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-column',
-  imports: [MatTableModule, NgTemplateOutlet],
+  imports: [MatTableModule, DragDropModule, NgTemplateOutlet],
   templateUrl: './column.html',
   styleUrl: './column.scss',
   host: {
@@ -26,10 +27,10 @@ export class Column<T> implements OnInit {
   @ViewChild(MatCellDef, { static: true }) public cellDef!: MatCellDef;
   @ViewChild(MatHeaderCellDef, { static: true }) public headerCellDef!: MatHeaderCellDef;
   @ViewChild(MatFooterCellDef, { static: true }) public footerCellDef!: MatFooterCellDef;
-
+  //
   @ContentChild(TemplateRef, { static: true })
   cellTemplate!: TemplateRef<{ $implicit: T }>;
-
+  //
   ngOnInit(): void {
     if (this.columnDef) {
       this.columnDef.name = this.prop();
@@ -37,6 +38,20 @@ export class Column<T> implements OnInit {
       this.columnDef.headerCell = this.headerCellDef;
       this.columnDef.footerCell = this.footerCellDef;
     }
+  }
+
+  startedDrag(event: CdkDragStart) {
+    console.log("started");
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log("dropped");
+    console.log(event);
+  }
+
+  dropList(event: CdkDragDrop<string[]>) {
+    console.log("dropped");
+    console.log(event);
   }
 
 }
