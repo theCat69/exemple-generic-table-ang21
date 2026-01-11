@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, inject, input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, inject, input, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -23,10 +23,16 @@ export class Column<T> {
 
   changeDetectorRef = inject(ChangeDetectorRef);
 
-  @ContentChild(TemplateRef, { static: true })
-  _cellTemplate!: TemplateRef<{ $implicit: T }>;
+  @ContentChild('cell', { static: true })
+  private _cellTemplate?: TemplateRef<{ $implicit: T }>;
+  @ContentChild('header', { static: true })
+  private _headerTemplate?: TemplateRef<{}>;
 
-  get cellTemplate(): TemplateRef<{}> {
+  get headerTemplate(): TemplateRef<any> | undefined {
+    return this._headerTemplate;
+  }
+
+  get cellTemplate(): TemplateRef<any> | undefined {
     return this._cellTemplate;
   }
 

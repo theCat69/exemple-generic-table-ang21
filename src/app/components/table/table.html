@@ -17,7 +17,13 @@
     <!-- <span class="drag-handle" cdkDragHandle> -->
     <!--   ⠿ -->
     <!-- </span> -->
-        <span> {{ column.label() ?? column.prop() }}</span>
+        @if(column.headerTemplate) {
+          <ng-container
+            *ngTemplateOutlet="column.headerTemplate"
+          ></ng-container>
+        } @else {
+          <span> {{ column.label() ?? column.prop() }}</span>
+        }
       </th>
       <td mat-cell *matCellDef="let row"
         [style.padding]="column.cellPadding()"
@@ -25,8 +31,7 @@
         @if(column.cellTemplate) {
           <ng-container
             *ngTemplateOutlet="column.cellTemplate; context: { $implicit: row }"
-          >
-          </ng-container>
+          ></ng-container>
         }
         @else {
           {{ row[column.prop()] }}
