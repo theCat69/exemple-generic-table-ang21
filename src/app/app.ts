@@ -3,6 +3,7 @@ import { Table } from './components/table/table';
 import { Column } from './components/column/column';
 import { MatButtonModule } from '@angular/material/button';
 import { PredefinedTemplate } from './components/predefined-template/predefined-template';
+import { EditButtonTray } from './components/cell-actions/edit-button-tray/edit-button-tray';
 
 export interface PeriodicElement {
   name: string;
@@ -14,7 +15,7 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-root',
-  imports: [Table, Column, MatButtonModule, PredefinedTemplate],
+  imports: [Table, Column, MatButtonModule, PredefinedTemplate, EditButtonTray],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

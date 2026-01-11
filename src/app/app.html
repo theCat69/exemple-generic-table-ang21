@@ -23,12 +23,24 @@
 
   <app-predefined-template prop="symbol" />
 
-  <app-column prop="subElem" [valueAccessor]="subElemntAccessor" />
+  <app-column prop="subElem" [valueAccessor]="subElemntAccessor" sortable />
 
   <app-column prop="action" styleHeaderBgColor="cyan" [draggable]="false">
-    <ng-template #cell let-elem>
+    <ng-template
+      #cell
+      let-elem
+      let-activateEdit="activateEdit"
+      let-saveEdit="saveEdit"
+      let-cancelEdit="cancelEdit"
+    >
       <div class="flex-container">
         <button mat-button (click)="myAction(elem)">action !</button>
+        <app-edit-button-tray
+          [elem]="elem"
+          [activateEdit]="activateEdit"
+          [saveEdit]="saveEdit"
+          [cancelEdit]="cancelEdit"
+        />
       </div>
     </ng-template>
   </app-column>

@@ -40,7 +40,7 @@ export type SortEvent<T> = { accessor: string | ColumnValueAccessor<T>; event: S
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Table<T> implements AfterContentInit {
-  tableInlineSortService = inject(TableInlineSort);
+  private readonly tableInlineSortService = inject(TableInlineSort);
 
   displayedColumns = signal<string[]>([]);
   columnsToDisplayColumns: Map<string, Column<T>> = new Map();
@@ -50,6 +50,8 @@ export class Table<T> implements AfterContentInit {
 
   sortBehavior = input<Behavior>('inline');
   onSort = output<SortEvent<T>>();
+
+  private isInEdit = signal(false);
 
   @ViewChild(MatTable, { static: true })
   table!: MatTable<T>;
@@ -90,5 +92,20 @@ export class Table<T> implements AfterContentInit {
     } else if (this.sortBehavior() === 'event') {
       this.onSort.emit({ accessor, event });
     }
+  }
+
+  activateEdit(elem: T) {
+    console.log('edit mode');
+    this.isInEdit.set(true);
+  }
+
+  cancelEdit() {
+    console.log('cancel edit');
+    this.isInEdit.set(false);
+  }
+
+  saveEdit(elem: T) {
+    console.log('save edit');
+    this.isInEdit.set(false);
   }
 }

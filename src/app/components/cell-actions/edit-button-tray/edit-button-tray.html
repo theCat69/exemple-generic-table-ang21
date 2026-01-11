@@ -1,0 +1,6 @@
+@if (!isInEdit()) {
+  <button mat-button (click)="activateEditInternal(elem())">Edit</button>
+} @else {
+  <button mat-button (click)="saveEditInternal(elem())">Save</button>
+  <button mat-button (click)="cancelEditInternal(elem())">Cancel</button>
+}
