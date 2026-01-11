@@ -41,7 +41,9 @@ export class Column<T> {
   sortable = input(false, { transform: booleanAttribute });
   /** Activate edition for this column. Default: false */
   editable = input(false, { transform: booleanAttribute });
-  /** Activate drag n drop behavior to reorder this column. Default: true */
+  /** Activate drag n drop behavior to reorder this column. Default: true
+  * If set to false be aware that the element will still be able to be reordered
+  * if it is not an edge of the table */
   draggable = input(true);
 
   /** Override header cell background color */
