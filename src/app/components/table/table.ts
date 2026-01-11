@@ -71,7 +71,7 @@ export class Table<T> implements AfterContentInit {
    */
   visibleColumns = input<string[]>();
   protected readonly displayedColumns = signal<string[]>([]);
-  protected readonly columnsToDisplayColumns = new Map<string, Column<T>>();
+  protected readonly columnsRegistry = new Map<string, Column<T>>();
 
   /**
    * Array of data to display in that Table.
@@ -102,8 +102,8 @@ export class Table<T> implements AfterContentInit {
   private readonly _columns!: QueryList<Column<T>>;
   private activeColumns = computed(() => {
     const displayedColumns = this.displayedColumns();
-    if (displayedColumns && this.columnsToDisplayColumns.size > 0) {
-      return displayedColumns.map((disCol) => this.columnsToDisplayColumns.get(disCol));
+    if (displayedColumns && this.columnsRegistry.size > 0) {
+      return displayedColumns.map((disCol) => this.columnsRegistry.get(disCol));
     }
     return [];
   });
@@ -116,7 +116,7 @@ export class Table<T> implements AfterContentInit {
 
   ngAfterContentInit() {
     this._columns.forEach((col) => {
-      this.columnsToDisplayColumns.set(col.prop(), col);
+      this.columnsRegistry.set(col.prop(), col);
     });
 
     let displayedColumns = [];
@@ -147,7 +147,7 @@ export class Table<T> implements AfterContentInit {
   }
 
   onSortChange(event: Sort) {
-    const sortColumn = this.columnsToDisplayColumns.get(event.active)!;
+    const sortColumn = this.columnsRegistry.get(event.active)!;
     const accessor = sortColumn.valueAccessor() ?? sortColumn.prop();
     if (this.sortBehavior() === 'inline') {
       this.datas.update((dataArray) =>

@@ -10,7 +10,7 @@
   [cdkDropListData]="displayedColumns()"
 >
   @for (columnName of displayedColumns(); track columnName) {
-    @let column = columnsToDisplayColumns.get(columnName)!;
+    @let column = columnsRegistry.get(columnName)!;
     <ng-container columnRef [matColumnDef]="column.prop()">
       <th
         mat-header-cell
