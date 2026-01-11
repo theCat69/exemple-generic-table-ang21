@@ -22,6 +22,7 @@
         cdkDragLockAxis="x"
         [cdkDragData]="column.prop()"
         [cdkDragDisabled]="!column.draggable()"
+        [class.no-drag-animation]="!column.draggable()"
       >
         <!-- <span class="drag-handle" cdkDragHandle> -->
         <!--   ⠿ -->
