@@ -18,7 +18,7 @@ export class PredefinedTemplate<T> extends Column<T> {
   @ViewChild(TemplateRef)
   predefinedTemplate!: TemplateRef<{ $implicit: T }>;
 
-  override get cellTemplate(): TemplateRef<{}> {
+  override get cellTemplate(): TemplateRef<object> {
     return this.predefinedTemplate;
   }
 }

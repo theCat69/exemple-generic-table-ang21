@@ -23,7 +23,10 @@ import { TableInlineSort } from '../../services/table-inline-sort';
 import { ColumnValueAccessor } from '../../types/table-types';
 
 export type Behavior = 'inline' | 'event';
-export type SortEvent<T> = { accessor: string | ColumnValueAccessor<T>; event: Sort };
+export interface SortEvent<T> {
+  accessor: string | ColumnValueAccessor<T>;
+  event: Sort;
+}
 
 @Component({
   selector: 'app-table',
@@ -43,13 +46,13 @@ export class Table<T> implements AfterContentInit {
   private readonly tableInlineSortService = inject(TableInlineSort);
 
   displayedColumns = signal<string[]>([]);
-  columnsToDisplayColumns: Map<string, Column<T>> = new Map();
+  columnsToDisplayColumns = new Map<string, Column<T>>();
 
   datas = model.required<T[]>();
-  dataSource: MatTableDataSource<T> = new MatTableDataSource<T>();
+  dataSource = new MatTableDataSource<T>();
 
   sortBehavior = input<Behavior>('inline');
-  onSort = output<SortEvent<T>>();
+  sortEvent = output<SortEvent<T>>();
 
   private isInEdit = signal(false);
 

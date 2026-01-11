@@ -54,7 +54,7 @@ export class Column<T> {
   @ContentChild('cell', { static: true })
   private _cellTemplate?: TemplateRef<{ $implicit: T }>;
   @ContentChild('header', { static: true })
-  private _headerTemplate?: TemplateRef<{}>;
+  private _headerTemplate?: TemplateRef<object>;
 
   /**
    * Overridable getter for the header cell template.
@@ -62,7 +62,7 @@ export class Column<T> {
    *
    * @return TemplateRef of the headerTemplate if present
    * */
-  get headerTemplate(): TemplateRef<any> | undefined {
+  get headerTemplate(): TemplateRef<object> | undefined {
     return this._headerTemplate;
   }
 
@@ -72,7 +72,7 @@ export class Column<T> {
    *
    * @return TemplateRef of the cellTemplate if present
    * */
-  get cellTemplate(): TemplateRef<any> | undefined {
+  get cellTemplate(): TemplateRef<object> | undefined {
     return this._cellTemplate;
   }
 }
