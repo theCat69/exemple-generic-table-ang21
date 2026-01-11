@@ -1,11 +1,11 @@
 <app-table [datas]="elementData">
-  <app-column prop="name" label="NameLabel" cellPadding="0">
+  <app-column prop="name" label="NameLabel" cellPadding="0" sortable>
     <ng-template #cell let-elem>
       {{ elem.name }}
     </ng-template>
   </app-column>
 
-  <app-column prop="position" />
+  <app-column prop="position" sortable />
 
   <app-column prop="weight|symbol" styleHeaderBgColor="green">
     <ng-template #header> Weigth and symbols </ng-template>
@@ -21,15 +21,15 @@
     </ng-template>
   </app-column>
 
-  <app-column prop="action" styleHeaderBgColor="cyan">
+  <app-predefined-template prop="symbol" />
+
+  <app-column prop="subElem" [valueAccessor]="subElemntAccessor" />
+
+  <app-column prop="action" styleHeaderBgColor="cyan" [draggable]="false">
     <ng-template #cell let-elem>
       <div class="flex-container">
         <button mat-button (click)="myAction(elem)">action !</button>
       </div>
     </ng-template>
   </app-column>
-
-  <app-predefined-template prop="symbol" />
-
-  <app-column prop="subElem" [valueAccessor]="subElemntAccessor" />
 </app-table>

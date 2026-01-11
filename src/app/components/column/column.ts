@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -7,6 +8,7 @@ import {
   input,
   TemplateRef,
 } from '@angular/core';
+import { SimpleValue } from '../../types/table-types';
 
 @Component({
   selector: 'app-column',
@@ -17,11 +19,16 @@ import {
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Column<T, V> {
+export class Column<T> {
   /** Column name that should be used to reference this column. */
   prop = input.required<string>();
   label = input<string>();
-  valueAccessor = input<(elem: T) => V>();
+  valueAccessor = input<(elem: T) => SimpleValue>();
+
+  sortable = input(false, { transform: booleanAttribute });
+  //this will be for later use with a specific edit inline action
+  editable = input(false, { transform: booleanAttribute });
+  draggable = input(true);
 
   //overridable styles for columns
   styleHeaderBgColor = input<string>();

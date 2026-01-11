@@ -4,7 +4,10 @@ import {
   Component,
   ContentChildren,
   effect,
+  inject,
   input,
+  model,
+  output,
   QueryList,
   signal,
   ViewChild,
@@ -15,25 +18,43 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { NgTemplateOutlet } from '@angular/common';
+import { MatSortModule, Sort } from '@angular/material/sort';
+import { TableInlineSort } from '../../services/table-inline-sort';
+import { ColumnValueAccessor } from '../../types/table-types';
+
+export type Behavior = 'inline' | 'event';
+export type SortEvent<T> = { accessor: string | ColumnValueAccessor<T>; event: Sort };
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule, MatPaginatorModule, DragDropModule, MatButtonModule, NgTemplateOutlet],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    DragDropModule,
+    MatButtonModule,
+    NgTemplateOutlet,
+  ],
   templateUrl: './table.html',
   styleUrl: './table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Table<T> implements AfterContentInit {
-  displayedColumns = signal<string[]>([]);
-  columnsToDisplayColumns: Map<string, Column<T, any>> = new Map();
+  tableInlineSortService = inject(TableInlineSort);
 
-  datas = input.required<T[]>();
+  displayedColumns = signal<string[]>([]);
+  columnsToDisplayColumns: Map<string, Column<T>> = new Map();
+
+  datas = model.required<T[]>();
   dataSource: MatTableDataSource<T> = new MatTableDataSource<T>();
+
+  sortBehavior = input<Behavior>('inline');
+  onSort = output<SortEvent<T>>();
 
   @ViewChild(MatTable, { static: true })
   table!: MatTable<T>;
   @ContentChildren(Column)
-  columns!: QueryList<Column<T, any>>;
+  columns!: QueryList<Column<T>>;
 
   constructor() {
     effect(() => {
@@ -52,10 +73,22 @@ export class Table<T> implements AfterContentInit {
     console.log(event);
   }
 
-  dropColumn(event: CdkDragDrop<string[]>) {
+  onDropColumn(event: CdkDragDrop<string[]>) {
     this.displayedColumns.update((cols) => {
       moveItemInArray(cols, event.previousIndex, event.currentIndex);
       return cols;
     });
+  }
+
+  onSortChange(event: Sort) {
+    const sortColumn = this.columnsToDisplayColumns.get(event.active)!;
+    const accessor = sortColumn.valueAccessor() ?? sortColumn.prop();
+    if (this.sortBehavior() === 'inline') {
+      this.datas.update((dataArray) =>
+        this.tableInlineSortService.sortArray(dataArray, event.direction, accessor),
+      );
+    } else if (this.sortBehavior() === 'event') {
+      this.onSort.emit({ accessor, event });
+    }
   }
 }

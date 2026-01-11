@@ -2,9 +2,11 @@
   mat-table
   [dataSource]="dataSource"
   class="mat-elevation-z8"
+  matSort
+  (matSortChange)="onSortChange($event)"
   cdkDropList
   cdkDropListOrientation="horizontal"
-  (cdkDropListDropped)="dropColumn($event)"
+  (cdkDropListDropped)="onDropColumn($event)"
   [cdkDropListData]="displayedColumns()"
 >
   @for (columnName of displayedColumns(); track columnName) {
@@ -13,11 +15,13 @@
       <th
         mat-header-cell
         *matHeaderCellDef
-        class="draggable-element"
         [style.background-color]="column.styleHeaderBgColor()"
+        mat-sort-header
+        [disabled]="!column.sortable()"
         cdkDrag
         cdkDragLockAxis="x"
-        [cdkDragData]="column.prop"
+        [cdkDragData]="column.prop()"
+        [cdkDragDisabled]="!column.draggable()"
       >
         <!-- <span class="drag-handle" cdkDragHandle> -->
         <!--   ⠿ -->
