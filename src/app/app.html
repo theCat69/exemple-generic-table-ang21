@@ -1,23 +1,21 @@
 <app-table [datas]="elementData">
   <app-column prop="name" label="NameLabel" cellPadding="0">
     <ng-template #cell let-elem>
-      {{elem.name}}
+      {{ elem.name }}
     </ng-template>
   </app-column>
 
   <app-column prop="position" />
 
   <app-column prop="weight|symbol" styleHeaderBgColor="green">
-    <ng-template #header>
-      Weigth and symbols
-    </ng-template>
+    <ng-template #header> Weigth and symbols </ng-template>
     <ng-template #cell let-elem>
       <div class="flex-container">
-        <div [style]="{'background-color': 'blue'}">
-          {{elem.weight}}
+        <div [style]="{ 'background-color': 'blue' }">
+          {{ elem.weight }}
         </div>
         <div>
-          {{elem.symbol}}
+          {{ elem.symbol }}
         </div>
       </div>
     </ng-template>
@@ -26,12 +24,7 @@
   <app-column prop="action" styleHeaderBgColor="cyan">
     <ng-template #cell let-elem>
       <div class="flex-container">
-        <button
-          mat-button
-          (click)="myAction(elem)"
-        >
-          action !
-        </button>
+        <button mat-button (click)="myAction(elem)">action !</button>
       </div>
     </ng-template>
   </app-column>

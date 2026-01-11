@@ -1,40 +1,40 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
-      cdkDropList
-      cdkDropListOrientation="horizontal"
-      (cdkDropListDropped)="dropColumn($event)"
-      [cdkDropListData]="displayedColumns()"
+<table
+  mat-table
+  [dataSource]="dataSource"
+  class="mat-elevation-z8"
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="dropColumn($event)"
+  [cdkDropListData]="displayedColumns()"
 >
-  @for(columnName of displayedColumns(); track columnName) {
-  @let column = columnsToDisplayColumns.get(columnName)!;
+  @for (columnName of displayedColumns(); track columnName) {
+    @let column = columnsToDisplayColumns.get(columnName)!;
     <ng-container columnRef [matColumnDef]="column.prop()">
-      <th mat-header-cell *matHeaderCellDef
+      <th
+        mat-header-cell
+        *matHeaderCellDef
         class="draggable-element"
         [style.background-color]="column.styleHeaderBgColor()"
         cdkDrag
         cdkDragLockAxis="x"
         [cdkDragData]="column.prop"
       >
-    <!-- <span class="drag-handle" cdkDragHandle> -->
-    <!--   ⠿ -->
-    <!-- </span> -->
-        @if(column.headerTemplate) {
-          <ng-container
-            *ngTemplateOutlet="column.headerTemplate"
-          ></ng-container>
+        <!-- <span class="drag-handle" cdkDragHandle> -->
+        <!--   ⠿ -->
+        <!-- </span> -->
+        @if (column.headerTemplate) {
+          <ng-container *ngTemplateOutlet="column.headerTemplate"></ng-container>
         } @else {
           <span> {{ column.label() ?? column.prop() }}</span>
         }
       </th>
-      <td mat-cell *matCellDef="let row"
-        [style.padding]="column.cellPadding()"
-      >
-        @if(column.cellTemplate) {
+      <td mat-cell *matCellDef="let row" [style.padding]="column.cellPadding()">
+        @if (column.cellTemplate) {
           <ng-container
             *ngTemplateOutlet="column.cellTemplate; context: { $implicit: row }"
           ></ng-container>
-        }
-        @else {
-          @if(column.valueAccessor()) {
+        } @else {
+          @if (column.valueAccessor()) {
             {{ column.valueAccessor()!(row) }}
           } @else {
             {{ row[column.prop()] }}
@@ -45,7 +45,7 @@
   }
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-  <tr mat-row *matRowDef="let data; columns: displayedColumns();"></tr>
+  <tr mat-row *matRowDef="let data; columns: displayedColumns()"></tr>
 </table>
 <mat-paginator
   [length]="0"

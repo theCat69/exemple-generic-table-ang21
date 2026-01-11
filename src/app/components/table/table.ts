@@ -7,7 +7,7 @@ import {
   input,
   QueryList,
   signal,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Column } from '../column/column';
@@ -21,10 +21,9 @@ import { NgTemplateOutlet } from '@angular/common';
   imports: [MatTableModule, MatPaginatorModule, DragDropModule, MatButtonModule, NgTemplateOutlet],
   templateUrl: './table.html',
   styleUrl: './table.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Table<T> implements AfterContentInit {
-
   displayedColumns = signal<string[]>([]);
   columnsToDisplayColumns: Map<string, Column<T, any>> = new Map();
 
@@ -43,10 +42,10 @@ export class Table<T> implements AfterContentInit {
   }
 
   ngAfterContentInit() {
-    this.columns.forEach(col => {
+    this.columns.forEach((col) => {
       this.columnsToDisplayColumns.set(col.prop(), col);
-    })
-    this.displayedColumns.set(this.columns.map(c => c.prop()));
+    });
+    this.displayedColumns.set(this.columns.map((c) => c.prop()));
   }
 
   onPageChange(event: PageEvent) {
@@ -54,12 +53,8 @@ export class Table<T> implements AfterContentInit {
   }
 
   dropColumn(event: CdkDragDrop<string[]>) {
-    this.displayedColumns.update(cols => {
-      moveItemInArray(
-        cols,
-        event.previousIndex,
-        event.currentIndex
-      );
+    this.displayedColumns.update((cols) => {
+      moveItemInArray(cols, event.previousIndex, event.currentIndex);
       return cols;
     });
   }

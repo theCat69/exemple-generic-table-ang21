@@ -1,13 +1,21 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, inject, input, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  inject,
+  input,
+  TemplateRef,
+} from '@angular/core';
 
 @Component({
   selector: 'app-column',
   template: '',
   host: {
-    'class': 'simple-column cdk-visually-hidden',
+    class: 'simple-column cdk-visually-hidden',
     '[attr.ariaHidden]': 'true',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Column<T, V> {
   /** Column name that should be used to reference this column. */
@@ -33,5 +41,4 @@ export class Column<T, V> {
   get cellTemplate(): TemplateRef<any> | undefined {
     return this._cellTemplate;
   }
-
 }

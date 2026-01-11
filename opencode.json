@@ -3,12 +3,7 @@
   "mcp": {
     "angular-cli": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@angular/cli",
-        "mcp"
-      ],
+      "command": ["npx", "-y", "@angular/cli", "mcp"],
       "enabled": true
     }
   }

@@ -17,71 +17,97 @@ export interface PeriodicElement {
   imports: [Table, Column, MatButtonModule, PredefinedTemplate],
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
   elementData: PeriodicElement[] = [
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', subElemnt: { subValue: "hell" } },
+    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', subElemnt: { subValue: 'hell' } },
     {
-      position: 2, name: 'Helium', weight: 4.0026, symbol: 'He',
+      position: 2,
+      name: 'Helium',
+      weight: 4.0026,
+      symbol: 'He',
       subElemnt: {
-        subValue: 'no'
-      }
+        subValue: 'no',
+      },
     },
     {
-      position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li',
+      position: 3,
+      name: 'Lithium',
+      weight: 6.941,
+      symbol: 'Li',
       subElemnt: {
-        subValue: 'bro'
-      }
+        subValue: 'bro',
+      },
     },
     {
-      position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be',
+      position: 4,
+      name: 'Beryllium',
+      weight: 9.0122,
+      symbol: 'Be',
       subElemnt: {
-        subValue: 'what'
-      }
+        subValue: 'what',
+      },
     },
     {
-      position: 5, name: 'Boron', weight: 10.811, symbol: 'B',
+      position: 5,
+      name: 'Boron',
+      weight: 10.811,
+      symbol: 'B',
       subElemnt: {
-        subValue: 'are'
-      }
+        subValue: 'are',
+      },
     },
     {
-      position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C',
+      position: 6,
+      name: 'Carbon',
+      weight: 12.0107,
+      symbol: 'C',
       subElemnt: {
-        subValue: 'you'
-      }
+        subValue: 'you',
+      },
     },
     {
-      position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N',
+      position: 7,
+      name: 'Nitrogen',
+      weight: 14.0067,
+      symbol: 'N',
       subElemnt: {
-        subValue: 'doing'
-      }
+        subValue: 'doing',
+      },
     },
     {
-      position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O',
+      position: 8,
+      name: 'Oxygen',
+      weight: 15.9994,
+      symbol: 'O',
       subElemnt: {
-        subValue: 'seriously'
-      }
+        subValue: 'seriously',
+      },
     },
     {
-      position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F',
+      position: 9,
+      name: 'Fluorine',
+      weight: 18.9984,
+      symbol: 'F',
       subElemnt: {
-        subValue: 'your'
-      }
+        subValue: 'your',
+      },
     },
     {
-      position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne',
+      position: 10,
+      name: 'Neon',
+      weight: 20.1797,
+      symbol: 'Ne',
       subElemnt: {
-        subValue: 'crazy'
-      }
+        subValue: 'crazy',
+      },
     },
   ];
 
   subElemntAccessor(element: PeriodicElement) {
     return element.subElemnt.subValue;
   }
-
 
   tableAction(elements: PeriodicElement[]) {
     console.log('elements', elements);
