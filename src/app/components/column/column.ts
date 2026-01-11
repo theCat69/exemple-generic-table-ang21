@@ -1,10 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, inject, input, TemplateRef, ViewChild } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, inject, input, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-column',
-  imports: [MatTableModule, DragDropModule],
   template: '',
   host: {
     'class': 'simple-column cdk-visually-hidden',

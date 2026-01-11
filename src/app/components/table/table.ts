@@ -12,13 +12,13 @@ import {
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Column } from '../column/column';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule, MatPaginatorModule, DragDropModule, CdkDropList, MatButtonModule, NgTemplateOutlet],
+  imports: [MatTableModule, MatPaginatorModule, DragDropModule, MatButtonModule, NgTemplateOutlet],
   templateUrl: './table.html',
   styleUrl: './table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
