@@ -2,6 +2,7 @@ import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
+  computed,
   ContentChildren,
   effect,
   inject,
@@ -27,6 +28,10 @@ export interface SortEvent<T> {
   event: Sort;
 }
 
+//TODO add some top, bottom and side bar capabilities
+//TODO some bars will behave like columns. You should be able to
+//TODO configure them through templates and content projection.
+
 /**
  * Generic table component using mat-table. It is ment to be use in conjonction with Column.
  * This aim to be an extensible class using content projection and ng-template.
@@ -51,6 +56,20 @@ export interface SortEvent<T> {
 export class Table<T> implements AfterContentInit {
   private readonly tableInlineSortService = inject(TableInlineSort);
 
+  /**
+   * Column order for this table component.
+   * This could be used in template to give a different order than the one
+   * displayed in template.
+   * If another order was saved for the user then it will be overidden by it.
+   * This list should contains all the columns.
+   */
+  columnOrder = input<string[]>();
+  /**
+   * List of visible columns in that component.
+   * This could be used in template to give a default behavior
+   * If another configuration was saved for the user then it will be overidden by it.
+   */
+  visibleColumns = input<string[]>();
   protected readonly displayedColumns = signal<string[]>([]);
   protected readonly columnsToDisplayColumns = new Map<string, Column<T>>();
 
@@ -80,7 +99,14 @@ export class Table<T> implements AfterContentInit {
   private isInEdit = signal(false);
 
   @ContentChildren(Column)
-  private readonly columns!: QueryList<Column<T>>;
+  private readonly _columns!: QueryList<Column<T>>;
+  private activeColumns = computed(() => {
+    const displayedColumns = this.displayedColumns();
+    if (displayedColumns && this.columnsToDisplayColumns.size > 0) {
+      return displayedColumns.map((disCol) => this.columnsToDisplayColumns.get(disCol));
+    }
+    return [];
+  });
 
   constructor() {
     effect(() => {
@@ -89,10 +115,22 @@ export class Table<T> implements AfterContentInit {
   }
 
   ngAfterContentInit() {
-    this.columns.forEach((col) => {
+    this._columns.forEach((col) => {
       this.columnsToDisplayColumns.set(col.prop(), col);
     });
-    this.displayedColumns.set(this.columns.map((c) => c.prop()));
+
+    let displayedColumns = [];
+    if (this.columnOrder()) {
+      displayedColumns = this.columnOrder()!;
+    } else {
+      displayedColumns = this._columns.map((c) => c.prop());
+    }
+    if (this.visibleColumns()) {
+      displayedColumns = displayedColumns.filter((colName) =>
+        this.visibleColumns()?.includes(colName),
+      );
+    }
+    this.displayedColumns.set(displayedColumns);
   }
 
   onPageChange(event: PageEvent) {
@@ -100,10 +138,12 @@ export class Table<T> implements AfterContentInit {
   }
 
   onDropColumn(event: CdkDragDrop<string[]>) {
-    this.displayedColumns.update((cols) => {
-      moveItemInArray(cols, event.previousIndex, event.currentIndex);
-      return cols;
-    });
+    if (this.activeColumns()?.at(event.currentIndex)?.draggable()) {
+      this.displayedColumns.update((cols) => {
+        moveItemInArray(cols, event.previousIndex, event.currentIndex);
+        return cols;
+      });
+    }
   }
 
   onSortChange(event: Sort) {
