@@ -12,13 +12,14 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Column<T> {
+export class Column<T, V> {
   /** Column name that should be used to reference this column. */
   prop = input.required<string>();
   label = input<string>();
-  styleHeaderBgColor = input<string>('red');
+  valueAccessor = input<(elem: T) => V>();
 
   //overridable styles for columns
+  styleHeaderBgColor = input<string>();
   cellPadding = input<string>();
 
   changeDetectorRef = inject(ChangeDetectorRef);

@@ -26,7 +26,7 @@ import { NgTemplateOutlet } from '@angular/common';
 export class Table<T> implements AfterContentInit {
 
   displayedColumns = signal<string[]>([]);
-  columnsToDisplayColumns: Map<string, Column<T>> = new Map();
+  columnsToDisplayColumns: Map<string, Column<T, any>> = new Map();
 
   datas = input.required<T[]>();
   dataSource: MatTableDataSource<T> = new MatTableDataSource<T>();
@@ -34,7 +34,7 @@ export class Table<T> implements AfterContentInit {
   @ViewChild(MatTable, { static: true })
   table!: MatTable<T>;
   @ContentChildren(Column)
-  columns!: QueryList<Column<T>>;
+  columns!: QueryList<Column<T, any>>;
 
   constructor() {
     effect(() => {

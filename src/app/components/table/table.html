@@ -34,7 +34,11 @@
           ></ng-container>
         }
         @else {
-          {{ row[column.prop()] }}
+          @if(column.valueAccessor()) {
+            {{ column.valueAccessor()!(row) }}
+          } @else {
+            {{ row[column.prop()] }}
+          }
         }
       </td>
     </ng-container>

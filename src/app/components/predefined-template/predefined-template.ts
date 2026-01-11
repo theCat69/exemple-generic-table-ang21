@@ -8,7 +8,7 @@ import { Column } from '../column/column';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: Column, useExisting: forwardRef(() => PredefinedTemplate) }]
 })
-export class PredefinedTemplate<T> extends Column<T> {
+export class PredefinedTemplate<T, V> extends Column<T, V> {
 
   @ViewChild(TemplateRef)
   predefinedTemplate!: TemplateRef<{ $implicit: T; }>;
