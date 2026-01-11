@@ -10,9 +10,8 @@ import {
   output,
   QueryList,
   signal,
-  ViewChild,
 } from '@angular/core';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Column } from '../column/column';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -28,6 +27,13 @@ export interface SortEvent<T> {
   event: Sort;
 }
 
+/**
+ * Generic table component using mat-table. It is ment to be use in conjonction with Column.
+ * This aim to be an extensible class using content projection and ng-template.
+ * It can parse Column component content to define his column behavior.
+ * It exposes many events that you can listen to and inject some internal behavior through ng-template to
+ * be used by a Column component.
+ */
 @Component({
   selector: 'app-table',
   imports: [
@@ -45,21 +51,36 @@ export interface SortEvent<T> {
 export class Table<T> implements AfterContentInit {
   private readonly tableInlineSortService = inject(TableInlineSort);
 
-  displayedColumns = signal<string[]>([]);
-  columnsToDisplayColumns = new Map<string, Column<T>>();
+  protected readonly displayedColumns = signal<string[]>([]);
+  protected readonly columnsToDisplayColumns = new Map<string, Column<T>>();
 
+  /**
+   * Array of data to display in that Table.
+   * This can be use in one way or two way databinding.
+   * This is not ment to be used with ngModel.
+   */
   datas = model.required<T[]>();
-  dataSource = new MatTableDataSource<T>();
+  protected readonly dataSource = new MatTableDataSource<T>();
 
+  /**
+   * Determine the sort behavior.
+   * Possible values:
+   *   - 'inline' => perform sort operation inline, in memory on the underlying datas array
+   *   - 'event' => send a SortEvent event through the (sortEvent) event listener so you can sort the
+   *                datas yourself. After sorting you need to update datas input for sort to be applied
+   *                to the table.
+   */
   sortBehavior = input<Behavior>('inline');
+
+  /*
+   * Sort event emmited if sortBehavior is set to 'event'
+   */
   sortEvent = output<SortEvent<T>>();
 
   private isInEdit = signal(false);
 
-  @ViewChild(MatTable, { static: true })
-  table!: MatTable<T>;
   @ContentChildren(Column)
-  columns!: QueryList<Column<T>>;
+  private readonly columns!: QueryList<Column<T>>;
 
   constructor() {
     effect(() => {
@@ -93,7 +114,7 @@ export class Table<T> implements AfterContentInit {
         this.tableInlineSortService.sortArray(dataArray, event.direction, accessor),
       );
     } else if (this.sortBehavior() === 'event') {
-      this.onSort.emit({ accessor, event });
+      this.sortEvent.emit({ accessor, event });
     }
   }
 

@@ -27,6 +27,8 @@ import { SimpleValue } from '../../types/table-types';
 export class Column<T> {
   /** Column name that should be used to reference this column.
    * By default, this will be used to access the column value as it was keyof T.
+   *
+   * You can extend this component behavior by projecting template yourself and adding input.
    * */
   prop = input.required<string>();
   /** Column header label value */
