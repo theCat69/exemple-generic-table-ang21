@@ -4,6 +4,8 @@ import { Column } from './components/column/column';
 import { MatButtonModule } from '@angular/material/button';
 import { PredefinedTemplate } from './components/predefined-template/predefined-template';
 import { EditButtonTray } from './components/cell-actions/edit-button-tray/edit-button-tray';
+import { TableToolbar } from './components/table-toolbar/table-toolbar';
+import { MatCardModule } from '@angular/material/card';
 
 export interface PeriodicElement {
   name: string;
@@ -15,7 +17,7 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-root',
-  imports: [Table, Column, MatButtonModule, PredefinedTemplate, EditButtonTray],
+  imports: [Table, Column, MatButtonModule, PredefinedTemplate, EditButtonTray, TableToolbar, MatCardModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -116,5 +118,17 @@ export class App {
 
   myAction(element: PeriodicElement) {
     console.log('element', element);
+  }
+
+  globalAction(elements: PeriodicElement[]) {
+    console.log('global action', elements);
+  }
+
+  displayedColumnsLog(displayedColumns: string[]) {
+    console.log('displayed columns', displayedColumns);
+  }
+
+  modifyElem(elem: PeriodicElement) {
+    elem.subElemnt.subValue = elem.subElemnt.subValue + "hello";
   }
 }

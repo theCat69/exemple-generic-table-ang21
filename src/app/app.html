@@ -1,4 +1,17 @@
+<main>
+<div class="card">
+
 <app-table [datas]="elementData">
+  <app-table-toolbar>
+   <ng-template
+    let-elems
+    let-displayedColumns="displayedColumns"
+   >
+      <button mat-button (click)="globalAction(elems())">globale action !</button>
+      <button mat-button (click)="displayedColumnsLog(displayedColumns())">displayd columns!</button>
+   </ng-template>
+  </app-table-toolbar>
+
   <app-column prop="name" label="NameLabel" cellPadding="0" sortable>
     <ng-template #cell let-elem>
       {{ elem.name }}
@@ -35,6 +48,7 @@
     >
       <div class="flex-container">
         <button mat-button (click)="myAction(elem)">action !</button>
+        <button mat-button (click)="modifyElem(elem)">modify elem</button>
         <app-edit-button-tray
           [elem]="elem"
           [activateEdit]="activateEdit"
@@ -45,3 +59,6 @@
     </ng-template>
   </app-column>
 </app-table>
+
+</div>
+</main>

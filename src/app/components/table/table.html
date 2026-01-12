@@ -1,3 +1,11 @@
+@if(toolbar) {
+  <div class="table-toolbar">
+      <ng-container *ngTemplateOutlet="toolbar.toolbarTemplate; context : {
+        $implicit: datas,
+        displayedColumns: displayedColumns
+      }"></ng-container>
+  </div>
+}
 <table
   mat-table
   [dataSource]="dataSource"

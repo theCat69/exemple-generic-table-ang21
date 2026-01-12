@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ContentChild,
   ContentChildren,
   effect,
   inject,
@@ -21,6 +22,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { TableInlineSort } from '../../services/table-inline-sort';
 import { ColumnValueAccessor } from '../../types/table-types';
+import { TableToolbar } from '../table-toolbar/table-toolbar';
 
 export type Behavior = 'inline' | 'event';
 export interface SortEvent<T> {
@@ -107,6 +109,9 @@ export class Table<T> implements AfterContentInit {
     }
     return [];
   });
+
+  @ContentChild(TableToolbar)
+  protected readonly toolbar?: TableToolbar;
 
   constructor() {
     effect(() => {
