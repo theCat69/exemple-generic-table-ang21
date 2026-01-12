@@ -1,64 +1,61 @@
 <main>
-<div class="card">
+  <div class="card">
+    <app-table [datas]="elementData">
+      <app-table-toolbar>
+        <ng-template let-elems let-displayedColumns="displayedColumns">
+          <button mat-button (click)="globalAction(elems())">globale action !</button>
+          <button mat-button (click)="displayedColumnsLog(displayedColumns())">
+            displayd columns!
+          </button>
+        </ng-template>
+      </app-table-toolbar>
 
-<app-table [datas]="elementData">
-  <app-table-toolbar>
-   <ng-template
-    let-elems
-    let-displayedColumns="displayedColumns"
-   >
-      <button mat-button (click)="globalAction(elems())">globale action !</button>
-      <button mat-button (click)="displayedColumnsLog(displayedColumns())">displayd columns!</button>
-   </ng-template>
-  </app-table-toolbar>
+      <app-column prop="name" label="NameLabel" cellPadding="0" sortable>
+        <ng-template #cell let-elem>
+          {{ elem.name }}
+        </ng-template>
+      </app-column>
 
-  <app-column prop="name" label="NameLabel" cellPadding="0" sortable>
-    <ng-template #cell let-elem>
-      {{ elem.name }}
-    </ng-template>
-  </app-column>
+      <app-column prop="position" sortable />
 
-  <app-column prop="position" sortable />
+      <app-column prop="weight|symbol" styleHeaderBgColor="green">
+        <ng-template #header> Weigth and symbols </ng-template>
+        <ng-template #cell let-elem>
+          <div class="flex-container">
+            <div [style]="{ 'background-color': 'blue' }">
+              {{ elem.weight }}
+            </div>
+            <div>
+              {{ elem.symbol }}
+            </div>
+          </div>
+        </ng-template>
+      </app-column>
 
-  <app-column prop="weight|symbol" styleHeaderBgColor="green">
-    <ng-template #header> Weigth and symbols </ng-template>
-    <ng-template #cell let-elem>
-      <div class="flex-container">
-        <div [style]="{ 'background-color': 'blue' }">
-          {{ elem.weight }}
-        </div>
-        <div>
-          {{ elem.symbol }}
-        </div>
-      </div>
-    </ng-template>
-  </app-column>
+      <app-predefined-template prop="symbol" />
 
-  <app-predefined-template prop="symbol" />
+      <app-column prop="subElem" [valueAccessor]="subElemntAccessor" sortable />
 
-  <app-column prop="subElem" [valueAccessor]="subElemntAccessor" sortable />
-
-  <app-column prop="action" styleHeaderBgColor="cyan" [draggable]="false">
-    <ng-template
-      #cell
-      let-elem
-      let-activateEdit="activateEdit"
-      let-saveEdit="saveEdit"
-      let-cancelEdit="cancelEdit"
-    >
-      <div class="flex-container">
-        <button mat-button (click)="myAction(elem)">action !</button>
-        <button mat-button (click)="modifyElem(elem)">modify elem</button>
-        <app-edit-button-tray
-          [elem]="elem"
-          [activateEdit]="activateEdit"
-          [saveEdit]="saveEdit"
-          [cancelEdit]="cancelEdit"
-        />
-      </div>
-    </ng-template>
-  </app-column>
-</app-table>
-
-</div>
+      <app-column prop="action" styleHeaderBgColor="cyan" [draggable]="false" maxWidth="180px">
+        <ng-template
+          #cell
+          let-elem
+          let-activateEdit="activateEdit"
+          let-saveEdit="saveEdit"
+          let-cancelEdit="cancelEdit"
+        >
+          <div class="flex-container">
+            <button mat-button (click)="myAction(elem)">action !</button>
+            <button mat-button (click)="modifyElem(elem)">modify elem</button>
+            <app-edit-button-tray
+              [elem]="elem"
+              [activateEdit]="activateEdit"
+              [saveEdit]="saveEdit"
+              [cancelEdit]="cancelEdit"
+            />
+          </div>
+        </ng-template>
+      </app-column>
+    </app-table>
+  </div>
 </main>

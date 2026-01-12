@@ -8,9 +8,8 @@ describe('TableToolbar', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TableToolbar]
-    })
-    .compileComponents();
+      imports: [TableToolbar],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TableToolbar);
     component = fixture.componentInstance;

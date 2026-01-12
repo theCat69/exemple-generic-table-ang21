@@ -55,6 +55,8 @@ export class Column<T> {
    * */
   cellPadding = input<string>();
 
+  maxWidth = input<string>();
+
   @ContentChild('cell', { static: true })
   private _cellTemplate?: TemplateRef<{ $implicit: T }>;
   @ContentChild('header', { static: true })

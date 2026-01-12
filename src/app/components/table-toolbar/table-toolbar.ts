@@ -7,12 +7,10 @@ import { ChangeDetectionStrategy, Component, ContentChild, TemplateRef } from '@
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableToolbar {
-
   @ContentChild(TemplateRef, { static: true })
   private _toolbarTemplate?: TemplateRef<object>;
 
   get toolbarTemplate(): TemplateRef<object> | undefined {
     return this._toolbarTemplate;
-  };
-
+  }
 }

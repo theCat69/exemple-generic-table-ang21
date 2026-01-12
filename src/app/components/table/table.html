@@ -1,9 +1,14 @@
-@if(toolbar) {
+@if (toolbar) {
   <div class="table-toolbar">
-      <ng-container *ngTemplateOutlet="toolbar.toolbarTemplate; context : {
-        $implicit: datas,
-        displayedColumns: displayedColumns
-      }"></ng-container>
+    <ng-container
+      *ngTemplateOutlet="
+        toolbar.toolbarTemplate;
+        context: {
+          $implicit: datas,
+          displayedColumns: displayedColumns,
+        }
+      "
+    ></ng-container>
   </div>
 }
 <table
@@ -41,7 +46,12 @@
           <span> {{ column.label() ?? column.prop() }}</span>
         }
       </th>
-      <td mat-cell *matCellDef="let row" [style.padding]="column.cellPadding()">
+      <td
+        mat-cell
+        *matCellDef="let row"
+        [style.padding]="column.cellPadding()"
+        [style.maxWidth]="column.maxWidth() ?? 'auto'"
+      >
         @if (column.cellTemplate) {
           <ng-container
             *ngTemplateOutlet="

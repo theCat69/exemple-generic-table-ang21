@@ -17,7 +17,15 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-root',
-  imports: [Table, Column, MatButtonModule, PredefinedTemplate, EditButtonTray, TableToolbar, MatCardModule],
+  imports: [
+    Table,
+    Column,
+    MatButtonModule,
+    PredefinedTemplate,
+    EditButtonTray,
+    TableToolbar,
+    MatCardModule,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -129,6 +137,6 @@ export class App {
   }
 
   modifyElem(elem: PeriodicElement) {
-    elem.subElemnt.subValue = elem.subElemnt.subValue + "hello";
+    elem.subElemnt.subValue = elem.subElemnt.subValue + 'hello';
   }
 }
