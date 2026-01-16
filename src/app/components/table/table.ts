@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgTemplateOutlet } from '@angular/common';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { TableInlineSort } from '../../services/table-inline-sort';
-import { ColumnValueAccessor } from '../../types/table-types';
+import { ColumnValueAccessor, toSignalArrayWithRowMetada } from '../../types/table-types';
 import { TableToolbar } from '../table-toolbar/table-toolbar';
 import { toSignalArray } from '../../types/signal-helper';
 
@@ -55,7 +55,7 @@ export interface SortEvent<T> {
   styleUrl: './table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Table<T> implements AfterContentInit {
+export class Table<T extends object> implements AfterContentInit {
   private readonly tableInlineSortService = inject(TableInlineSort);
 
   /**
@@ -83,7 +83,7 @@ export class Table<T> implements AfterContentInit {
   datas = model.required<T[]>();
   readonly dataSource = computed(() => {
     const datas = this.datas();
-    return toSignalArray(datas);
+    return toSignalArrayWithRowMetada(datas);
   });
 
   /**
@@ -115,12 +115,6 @@ export class Table<T> implements AfterContentInit {
 
   @ContentChild(TableToolbar)
   protected readonly toolbar?: TableToolbar;
-
-  constructor() {
-    // effect(() => {
-    //   this.dataSource.data = this.datas();
-    // });
-  }
 
   ngAfterContentInit() {
     this._columns.forEach((col) => {

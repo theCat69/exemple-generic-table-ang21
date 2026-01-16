@@ -47,6 +47,9 @@
           <div class="flex-container">
             <button mat-button (click)="myAction(elem)">action !</button>
             <button mat-button (click)="modifyElem(elem)">modify elem</button>
+            <button mat-button (click)="rollback(elem)"
+              [disabled]="!elem().modified"
+            >rollback elem</button>
             <app-edit-button-tray
               [elem]="elem()"
               [activateEdit]="activateEdit"

@@ -6,6 +6,7 @@ import { PredefinedTemplate } from './components/predefined-template/predefined-
 import { EditButtonTray } from './components/cell-actions/edit-button-tray/edit-button-tray';
 import { TableToolbar } from './components/table-toolbar/table-toolbar';
 import { MatCardModule } from '@angular/material/card';
+import { restoreOriginalValues, WithRowMetadata } from './types/table-types';
 
 export interface PeriodicElement {
   name: string;
@@ -136,10 +137,37 @@ export class App {
     console.log('displayed columns', displayedColumns);
   }
 
-  modifyElem(elem: WritableSignal<PeriodicElement>) {
+  snapShotElem(elem: WritableSignal<WithRowMetadata<PeriodicElement>>) {
+    if (elem().orignalValues || elem().modified) {
+      throw Error("you should not try to snapShot the elem if it was previously modified");
+    }
+    elem.update(elem => {
+      elem.orignalValues = JSON.stringify(elem);
+      return elem;
+    })
+  }
+
+  modifyElem(elem: WritableSignal<WithRowMetadata<PeriodicElement>>) {
+    console.log('modify before snapshot', elem());
+    this.snapShotElem(elem);
+    console.log('modify after snapshot', elem());
     elem.update(elem => {
       elem.subElemnt.subValue = elem.subElemnt.subValue + 'hello';
-      return { ...elem }
+      elem.modified = true;
+      return { ...elem };
+    });
+  }
+
+  rollback(elem: WritableSignal<WithRowMetadata<PeriodicElement>>) {
+    if (!elem().orignalValues) {
+      throw Error("elem has no original values. Did you forget to snapshot it ?");
+    }
+    elem.update(elem => {
+      console.log(elem);
+      return {
+        ...restoreOriginalValues(elem),
+        modified: false,
+      }
     });
   }
 }
