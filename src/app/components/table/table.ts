@@ -5,7 +5,6 @@ import {
   computed,
   ContentChild,
   ContentChildren,
-  effect,
   inject,
   input,
   model,
@@ -13,7 +12,7 @@ import {
   QueryList,
   signal,
 } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { Column } from '../column/column';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -23,6 +22,7 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { TableInlineSort } from '../../services/table-inline-sort';
 import { ColumnValueAccessor } from '../../types/table-types';
 import { TableToolbar } from '../table-toolbar/table-toolbar';
+import { toSignalArray } from '../../types/signal-helper';
 
 export type Behavior = 'inline' | 'event';
 export interface SortEvent<T> {
@@ -81,7 +81,10 @@ export class Table<T> implements AfterContentInit {
    * This is not ment to be used with ngModel.
    */
   datas = model.required<T[]>();
-  protected readonly dataSource = new MatTableDataSource<T>();
+  readonly dataSource = computed(() => {
+    const datas = this.datas();
+    return toSignalArray(datas);
+  });
 
   /**
    * Determine the sort behavior.
@@ -114,9 +117,9 @@ export class Table<T> implements AfterContentInit {
   protected readonly toolbar?: TableToolbar;
 
   constructor() {
-    effect(() => {
-      this.dataSource.data = this.datas();
-    });
+    // effect(() => {
+    //   this.dataSource.data = this.datas();
+    // });
   }
 
   ngAfterContentInit() {

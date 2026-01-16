@@ -4,7 +4,7 @@
       *ngTemplateOutlet="
         toolbar.toolbarTemplate;
         context: {
-          $implicit: datas,
+          $implicit: dataSource,
           displayedColumns: displayedColumns,
         }
       "
@@ -13,7 +13,7 @@
 }
 <table
   mat-table
-  [dataSource]="dataSource"
+  [dataSource]="dataSource()"
   class="mat-elevation-z8"
   matSort
   (matSortChange)="onSortChange($event)"
@@ -66,9 +66,9 @@
           ></ng-container>
         } @else {
           @if (column.valueAccessor()) {
-            {{ column.valueAccessor()!(row) }}
+            {{ column.valueAccessor()!(row()) }}
           } @else {
-            {{ row[column.prop()] }}
+            {{ row()[column.prop()] }}
           }
         }
       </td>

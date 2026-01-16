@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, WritableSignal } from '@angular/core';
 import { Table } from './components/table/table';
 import { Column } from './components/column/column';
 import { MatButtonModule } from '@angular/material/button';
@@ -136,7 +136,10 @@ export class App {
     console.log('displayed columns', displayedColumns);
   }
 
-  modifyElem(elem: PeriodicElement) {
-    elem.subElemnt.subValue = elem.subElemnt.subValue + 'hello';
+  modifyElem(elem: WritableSignal<PeriodicElement>) {
+    elem.update(elem => {
+      elem.subElemnt.subValue = elem.subElemnt.subValue + 'hello';
+      return { ...elem }
+    });
   }
 }

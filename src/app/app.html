@@ -12,7 +12,7 @@
 
       <app-column prop="name" label="NameLabel" cellPadding="0" sortable>
         <ng-template #cell let-elem>
-          {{ elem.name }}
+          {{ elem().name }}
         </ng-template>
       </app-column>
 
@@ -23,10 +23,10 @@
         <ng-template #cell let-elem>
           <div class="flex-container">
             <div [style]="{ 'background-color': 'blue' }">
-              {{ elem.weight }}
+              {{ elem().weight }}
             </div>
             <div>
-              {{ elem.symbol }}
+              {{ elem().symbol }}
             </div>
           </div>
         </ng-template>
@@ -48,7 +48,7 @@
             <button mat-button (click)="myAction(elem)">action !</button>
             <button mat-button (click)="modifyElem(elem)">modify elem</button>
             <app-edit-button-tray
-              [elem]="elem"
+              [elem]="elem()"
               [activateEdit]="activateEdit"
               [saveEdit]="saveEdit"
               [cancelEdit]="cancelEdit"
