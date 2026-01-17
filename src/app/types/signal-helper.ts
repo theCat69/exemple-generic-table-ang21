@@ -6,7 +6,7 @@ import { signal, Signal, WritableSignal } from '@angular/core';
  * @returns Array of writable signals
  */
 export function toSignalArray<T>(items: T[]): WritableSignal<T>[] {
-  return items.map(item => {
+  return items.map((item) => {
     return signal(item);
   });
 }
@@ -17,6 +17,5 @@ export function toSignalArray<T>(items: T[]): WritableSignal<T>[] {
  * @returns Array of readonly signals
  */
 export function toReadonlySignalArray<T>(items: T[]): Signal<T>[] {
-  return items.map(item => signal(item));
+  return items.map((item) => signal(item));
 }
-

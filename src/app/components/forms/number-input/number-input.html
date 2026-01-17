@@ -1,0 +1,18 @@
+<div class="basic-input">
+  <input
+    type="number"
+    [value]="value()"
+    (input)="updateModel($event.target.value)"
+    placeholder="Enter text..."
+  />
+
+@if (min()) {
+  {{ min() }}
+}
+@if (max()) {
+  {{ max() }}
+}
+@if (required()) {
+  {{ required() }}
+}
+</div>

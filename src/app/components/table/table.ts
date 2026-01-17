@@ -22,7 +22,6 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { TableInlineSort } from '../../services/table-inline-sort';
 import { ColumnValueAccessor, toSignalArrayWithRowMetada } from '../../types/table-types';
 import { TableToolbar } from '../table-toolbar/table-toolbar';
-import { toSignalArray } from '../../types/signal-helper';
 
 export type Behavior = 'inline' | 'event';
 export interface SortEvent<T> {

@@ -1,0 +1,10 @@
+<form (submit)="submit($event)">
+  <input type="email" [formField]="formTree.email" />
+  <!-- <input [formField]="formTree.name" /> -->
+  <app-number-input [formField]="formTree.age" />
+  <!-- <input type="number" [formField]="formTree.age" /> -->
+  <input type="date" [formField]="formTree.dateOfBirth" />
+
+  <app-simple-input [formField]="formTree.name" />
+  <button matButton type="submit" [disabled]="formTree().invalid()">submit</button>
+</form>
