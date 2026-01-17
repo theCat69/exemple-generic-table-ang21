@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { email, debounce, form, FormField, required, submit, min, max } from '@angular/forms/signals';
+import { email, debounce, form, FormField, required, submit, min, max, schema } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { SimpleInput } from '../../components/forms/simple-input/simple-input';
 import { NumberInput } from '../../components/forms/number-input/number-input';
@@ -35,14 +35,16 @@ export class FormPage {
     adresse: null
   });
 
-  formTree = form(this.formModel, (schemaPath) => {
+  formSchema = schema<FormObject>((schemaPath) => {
     debounce(schemaPath.email, 500);
     required(schemaPath.email, { message: 'Email required' });
     email(schemaPath.email, { message: 'Email should be valid' });
     required(schemaPath.age, { message: 'Age required' });
     min(schemaPath.age, 0);
     max(schemaPath.age, 150);
-  });
+  })
+
+  formTree = form(this.formModel, this.formSchema);
 
   submit(event: Event) {
     event.preventDefault();

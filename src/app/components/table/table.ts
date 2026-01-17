@@ -161,6 +161,7 @@ export class Table<T extends object> implements AfterContentInit {
 
   activateEdit(elem: T) {
     console.log('edit mode');
+    console.log('elem', elem);
     this.isInEdit.set(true);
   }
 
@@ -171,6 +172,7 @@ export class Table<T extends object> implements AfterContentInit {
 
   saveEdit(elem: T) {
     console.log('save edit');
+    console.log('elem', elem);
     this.isInEdit.set(false);
   }
 }

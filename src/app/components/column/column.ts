@@ -5,6 +5,7 @@ import {
   ContentChild,
   input,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { SimpleValue } from '../../types/table-types';
 
@@ -17,7 +18,8 @@ import { SimpleValue } from '../../types/table-types';
  */
 @Component({
   selector: 'app-column',
-  template: '',
+  templateUrl: './column.html',
+  styleUrl: './column.scss',
   host: {
     class: 'simple-column cdk-visually-hidden',
     '[attr.ariaHidden]': 'true',
@@ -55,12 +57,17 @@ export class Column<T> {
    * */
   cellPadding = input<string>();
 
-  maxWidth = input<string>();
+  width = input<string>();
 
   @ContentChild('cell', { static: true })
   private _cellTemplate?: TemplateRef<{ $implicit: T }>;
-  @ContentChild('header', { static: true })
+  @ContentChild('cellHeader', { static: true })
   private _headerTemplate?: TemplateRef<object>;
+
+  @ViewChild('cellDefault', { static: true })
+  private _defaultCellTemplate?: TemplateRef<{ $implicit: T }>;
+  @ViewChild('cellHeaderDefault', { static: true })
+  private _defaultHeaderTemplate?: TemplateRef<object>;
 
   /**
    * Overridable getter for the header cell template.
@@ -69,7 +76,7 @@ export class Column<T> {
    * @return TemplateRef of the headerTemplate if present
    * */
   get headerTemplate(): TemplateRef<object> | undefined {
-    return this._headerTemplate;
+    return this._headerTemplate ?? this._defaultHeaderTemplate;
   }
 
   /**
@@ -79,6 +86,6 @@ export class Column<T> {
    * @return TemplateRef of the cellTemplate if present
    * */
   get cellTemplate(): TemplateRef<object> | undefined {
-    return this._cellTemplate;
+    return this._cellTemplate ?? this._defaultCellTemplate;
   }
 }

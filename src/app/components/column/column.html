@@ -1,0 +1,17 @@
+<ng-template #cellHeaderDefault>
+  <span class="cell-header">{{ label() ?? prop() }}</span>
+</ng-template>
+<ng-template #cellDefault
+   let-row
+  >
+  <div class="cell">
+  @if (valueAccessor()) {
+   {{ valueAccessor()!(row()) }}
+  } @else {
+   {{ row()[prop()] }}
+  }
+  </div>
+</ng-template>
+<ng-template #cellEditDefault>
+
+</ng-template>

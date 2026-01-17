@@ -17,6 +17,16 @@ export function withMetadata<T extends object>(
   return { ...obj, ...rowMetadata };
 }
 
+export function isWithRowMetadata<T>(
+  value: unknown
+): value is WithRowMetadata<T> {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "modified" in value
+  );
+}
+
 export function toSignalArrayWithRowMetada<T extends object>(
   items: T[],
 ): WritableSignal<WithRowMetadata<T>>[] {

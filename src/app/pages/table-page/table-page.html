@@ -10,7 +10,9 @@
         </ng-template>
       </app-table-toolbar>
 
-      <app-column prop="name" label="NameLabel" cellPadding="0" sortable>
+      <app-column prop="name" label="NameLabel" sortable
+      width="40%"
+      >
         <ng-template #cell let-elem>
           {{ elem().name }}
         </ng-template>
@@ -19,7 +21,7 @@
       <app-column prop="position" sortable />
 
       <app-column prop="weight|symbol" styleHeaderBgColor="green">
-        <ng-template #header> Weigth and symbols </ng-template>
+        <ng-template #cellHeader> Weigth and symbols </ng-template>
         <ng-template #cell let-elem>
           <div class="flex-container">
             <div [style]="{ 'background-color': 'blue' }">
@@ -52,9 +54,9 @@
             </button>
             <app-edit-button-tray
               [elem]="elem()"
-              [activateEdit]="activateEdit"
-              [saveEdit]="saveEdit"
-              [cancelEdit]="cancelEdit"
+              (activateEdit)="activateEdit($event)"
+              (saveEdit)="saveEdit($event)"
+              (cancelEdit)="cancelEdit($event)"
             />
           </div>
         </ng-template>

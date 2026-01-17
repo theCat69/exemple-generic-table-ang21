@@ -11,8 +11,7 @@
     ></ng-container>
   </div>
 }
-<table
-  mat-table
+<mat-table
   [dataSource]="dataSource()"
   class="mat-elevation-z8"
   matSort
@@ -25,8 +24,7 @@
   @for (columnName of displayedColumns(); track columnName) {
     @let column = columnsRegistry.get(columnName)!;
     <ng-container columnRef [matColumnDef]="column.prop()">
-      <th
-        mat-header-cell
+      <mat-header-cell
         *matHeaderCellDef
         [style.background-color]="column.styleHeaderBgColor()"
         mat-sort-header
@@ -40,19 +38,13 @@
         <!-- <span class="drag-handle" cdkDragHandle> -->
         <!--   ⠿ -->
         <!-- </span> -->
-        @if (column.headerTemplate) {
-          <ng-container *ngTemplateOutlet="column.headerTemplate"></ng-container>
-        } @else {
-          <span> {{ column.label() ?? column.prop() }}</span>
-        }
-      </th>
-      <td
-        mat-cell
+        <ng-container *ngTemplateOutlet="column.headerTemplate"></ng-container>
+      </mat-header-cell>
+      <mat-cell
         *matCellDef="let row"
-        [style.padding]="column.cellPadding()"
-        [style.maxWidth]="column.maxWidth() ?? 'auto'"
       >
-        @if (column.cellTemplate) {
+        <!-- if you try to add style to cell without removing the flex grow of columns layout breaks completly -->
+        <!-- [style.padding]="column.cellPadding()" -->
           <ng-container
             *ngTemplateOutlet="
               column.cellTemplate;
@@ -64,20 +56,13 @@
               }
             "
           ></ng-container>
-        } @else {
-          @if (column.valueAccessor()) {
-            {{ column.valueAccessor()!(row()) }}
-          } @else {
-            {{ row()[column.prop()] }}
-          }
-        }
-      </td>
+      </mat-cell>
     </ng-container>
   }
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-  <tr mat-row *matRowDef="let data; columns: displayedColumns()"></tr>
-</table>
+  <mat-header-row *matHeaderRowDef="displayedColumns()"></mat-header-row>
+  <mat-row *matRowDef="let data; columns: displayedColumns()"></mat-row>
+</mat-table>
 <mat-paginator
   [length]="0"
   [pageSize]="5"

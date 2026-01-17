@@ -1,0 +1,22 @@
+.flex-container {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px;
+}
+
+.card {
+  overflow: hidden;
+  border-radius: 25px;
+  width: 100%;
+  padding-bottom: 72px;
+  max-height: 600px;
+}
