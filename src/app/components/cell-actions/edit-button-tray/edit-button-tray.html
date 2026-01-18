@@ -1,8 +1,9 @@
 @if (!isInEdit()) {
-  <button mat-button
-  [disabled]="isModified()"
-  (click)="activateEditInternal(elem())">Edit</button>
+  <button mat-button type="submit" (click)="activateEditInternal(elem())">Edit</button>
 } @else {
-  <button mat-button (click)="saveEditInternal(elem())">Save</button>
+  <button mat-button (click)="saveEditInternal(elem())"
+  [disabled]="!isModified() || !isFormValid()"
+  >Save</button>
   <button mat-button (click)="cancelEditInternal(elem())">Cancel</button>
 }
+

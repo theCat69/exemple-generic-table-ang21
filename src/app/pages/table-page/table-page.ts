@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { EditButtonTray } from '../../components/cell-actions/edit-button-tray/edit-button-tray';
@@ -6,8 +6,7 @@ import { Column } from '../../components/column/column';
 import { PredefinedTemplate } from '../../components/predefined-template/predefined-template';
 import { TableToolbar } from '../../components/table-toolbar/table-toolbar';
 import { Table } from '../../components/table/table';
-import { WithRowMetadata, restoreOriginalValues } from '../../types/table-types';
-import { form, required, schema, min, maxLength, FieldTree } from '@angular/forms/signals';
+import { form, required, schema, min, maxLength } from '@angular/forms/signals';
 
 export interface PeriodicElement {
   name: string;
@@ -141,6 +140,12 @@ export class TablePage {
 
   submit(event: Event) {
     event.preventDefault();
+    console.log(event.target);
+    console.log(event);
+  }
+
+  saveEvent(element: PeriodicElement) {
+    console.log('saveEvent', element);
   }
 
   subElemntAccessor(element: PeriodicElement) {
@@ -163,37 +168,4 @@ export class TablePage {
     console.log('displayed columns', displayedColumns);
   }
 
-  snapShotElem(elem: WritableSignal<WithRowMetadata<PeriodicElement>>) {
-    if (elem().orignalValues || elem().modified) {
-      throw Error('you should not try to snapShot the elem if it was previously modified');
-    }
-    elem.update((elem) => {
-      elem.orignalValues = JSON.stringify(elem);
-      return elem;
-    });
-  }
-
-  modifyElem(elem: WritableSignal<WithRowMetadata<PeriodicElement>>) {
-    console.log('modify before snapshot', elem());
-    this.snapShotElem(elem);
-    console.log('modify after snapshot', elem());
-    elem.update((elem) => {
-      elem.subElemnt.subValue = elem.subElemnt.subValue + 'hello';
-      elem.modified = true;
-      return { ...elem };
-    });
-  }
-
-  rollback(elem: WritableSignal<WithRowMetadata<PeriodicElement>>) {
-    if (!elem().orignalValues) {
-      throw Error('elem has no original values. Did you forget to snapshot it ?');
-    }
-    elem.update((elem) => {
-      console.log(elem);
-      return {
-        ...restoreOriginalValues(elem),
-        modified: false,
-      };
-    });
-  }
 }

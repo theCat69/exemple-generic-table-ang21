@@ -21,11 +21,6 @@
         }
       </mat-error>
     }
-    @if (disabled() && disabledReasons().length > 0) {
-      @for (reason of disabledReasons(); track reason) {
-        {{ reason.message }}
-      }
-    }
   </mat-form-field>
 }
 

@@ -4,13 +4,12 @@ import {
   Component,
   ContentChild,
   input,
-  model,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { SimpleValue } from '../../types/table-types';
 import { SimpleInput } from '../forms/simple-input/simple-input';
-import { FieldTree, FormField, FormValueControl } from '@angular/forms/signals';
+import { FieldTree, FormField } from '@angular/forms/signals';
 
 /**
  * Column component

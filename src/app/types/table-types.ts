@@ -4,17 +4,19 @@ export type SimpleValue = string | number | Date | null | undefined;
 export type ColumnValueAccessor<T> = string | ((elem: T) => SimpleValue);
 
 export interface RowMetada<T> {
-  modified: boolean;
-  orignalValues?: string;
+  inEdit: WritableSignal<boolean>;
 }
 
-export type WithRowMetadata<T> = T & RowMetada<T>;
+export type WithRowMetadata<T> = T & { __rowMetadata: RowMetada<T> };
 
 export function withMetadata<T extends object>(
   obj: T,
   rowMetadata: RowMetada<T>,
 ): WithRowMetadata<T> {
-  return { ...obj, ...rowMetadata };
+  return {
+    ...obj,
+    __rowMetadata: { ...rowMetadata },
+  };
 }
 
 export function isWithRowMetadata<T>(
@@ -23,7 +25,7 @@ export function isWithRowMetadata<T>(
   return (
     typeof value === "object" &&
     value !== null &&
-    "modified" in value
+    "__rowMetadata" in value
   );
 }
 
@@ -33,12 +35,8 @@ export function toSignalArrayWithRowMetada<T extends object>(
   return items.map((item) => {
     return signal(
       withMetadata(item, {
-        modified: false,
+        inEdit: signal(false)
       }),
     );
   });
-}
-
-export function restoreOriginalValues<T>(elem: WithRowMetadata<T>): T {
-  return JSON.parse(elem.orignalValues!);
 }

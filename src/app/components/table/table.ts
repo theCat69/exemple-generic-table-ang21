@@ -11,6 +11,8 @@ import {
   output,
   QueryList,
   signal,
+  untracked,
+  WritableSignal,
 } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { Column } from '../column/column';
@@ -20,9 +22,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgTemplateOutlet } from '@angular/common';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { TableInlineSort } from '../../services/table-inline-sort';
-import { ColumnValueAccessor, toSignalArrayWithRowMetada } from '../../types/table-types';
+import {
+  ColumnValueAccessor,
+  toSignalArrayWithRowMetada,
+  withMetadata,
+  WithRowMetadata,
+} from '../../types/table-types';
 import { TableToolbar } from '../table-toolbar/table-toolbar';
-import { Schema, schema } from '@angular/forms/signals';
 
 export type Behavior = 'inline' | 'event';
 export interface SortEvent<T> {
@@ -103,6 +109,8 @@ export class Table<T extends object> implements AfterContentInit {
 
   isInEdit = signal(false);
   formModel = model<T>();
+  formValid = input<boolean>(true);
+  saveEvent = output<T>();
 
   @ContentChildren(Column)
   private readonly _columns!: QueryList<Column<T>>;
@@ -161,23 +169,62 @@ export class Table<T extends object> implements AfterContentInit {
     }
   }
 
-  activateEdit(elem: T) {
-    console.log('edit mode');
-    console.log('elem', elem);
-    this.formModel.update(() => {
-      return { ...elem }
+  findElemInDatasource(elem: T): WritableSignal<WithRowMetadata<T>> | null {
+    let valueToReturn = null;
+    this.dataSource().forEach((elemSignal) => {
+      if (
+        (elemSignal() as Record<string, number>)['position'] ===
+        (elem as Record<string, number>)['position']
+      ) {
+        valueToReturn = elemSignal;
+      }
     });
+    return valueToReturn;
+  }
+
+  activateEdit(elem: WithRowMetadata<T>) {
+    const elemSignal = this.findElemInDatasource(elem);
+    if (elemSignal) {
+      elemSignal().__rowMetadata.inEdit.set(true);
+    }
+
+    this.formModel.update(() => {
+      return ({
+        ...elem,
+        __rowMetadata: undefined
+      } as WithRowMetadata<T>);
+    });
+
     this.isInEdit.set(true);
   }
 
-  cancelEdit() {
-    console.log('cancel edit');
+  cancelEdit(elem: WithRowMetadata<T>) {
     this.isInEdit.set(false);
+    const elemSignal = this.findElemInDatasource(elem);
+    if (elemSignal) {
+      elemSignal().__rowMetadata.inEdit.set(false);
+    }
   }
 
-  saveEdit(elem: T) {
-    console.log('save edit');
-    console.log('elem', elem);
-    this.isInEdit.set(false);
+  saveEdit(elem: WithRowMetadata<T>) {
+    if (this.formValid()) {
+      this.isInEdit.set(false);
+      const elemSignal = this.findElemInDatasource(elem);
+      const formModel = this.formModel();
+      if (elemSignal && formModel) {
+        elemSignal().__rowMetadata.inEdit.set(false);
+        elemSignal.update(() => {
+          const updatedElement = withMetadata(formModel,
+            {
+              inEdit: elemSignal().__rowMetadata.inEdit
+            }
+          )
+          return updatedElement;
+        });
+        this.saveEvent.emit(formModel);
+      }
+
+    }
   }
 }
+

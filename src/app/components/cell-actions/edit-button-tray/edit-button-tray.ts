@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, model, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal, untracked } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { isWithRowMetadata } from '../../../types/table-types';
 
@@ -14,19 +14,16 @@ import { isWithRowMetadata } from '../../../types/table-types';
 })
 export class EditButtonTray<T> {
   elem = input.required<T>();
+
+  isFormValid = input(true);
+  isModified = input(true);
+
   activateEdit = output<T>();
   saveEdit = output<T>();
   cancelEdit = output<T>();
 
   isInEdit = signal(false);
 
-  isModified = computed(() => {
-    const elem = this.elem();
-    if (isWithRowMetadata(elem)) {
-      return elem.modified;
-    }
-    return false;
-  })
 
   protected activateEditInternal(elem: T) {
     this.isInEdit.set(true);

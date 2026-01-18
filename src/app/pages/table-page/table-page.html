@@ -1,7 +1,9 @@
 <main>
   <div class="card">
     <form (submit)="submit($event)">
-      <app-table [datas]="elementData" [(formModel)]="perdiocElementModel">
+      <app-table [datas]="elementData" [(formModel)]="perdiocElementModel" [formValid]="!formTree().invalid()"
+      (saveEvent)="saveEvent($event)"
+      >
         <app-table-toolbar>
           <ng-template let-elems let-displayedColumns="displayedColumns">
             <button mat-button (click)="globalAction(elems())">globale action !</button>
@@ -52,12 +54,9 @@
           >
             <div class="flex-container">
               <button mat-button (click)="myAction(elem)">action !</button>
-              <button mat-button (click)="modifyElem(elem)">modify elem</button>
-              <button mat-button (click)="rollback(elem)" [disabled]="!elem().modified">
-                rollback elem
-              </button>
               <app-edit-button-tray
                 [elem]="elem()"
+                [isFormValid]="!formTree().invalid()"
                 (activateEdit)="activateEdit($event)"
                 (saveEdit)="saveEdit($event)"
                 (cancelEdit)="cancelEdit($event)"

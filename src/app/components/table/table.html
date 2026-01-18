@@ -40,12 +40,20 @@
         <!-- </span> -->
         <ng-container *ngTemplateOutlet="column.headerTemplate"></ng-container>
       </mat-header-cell>
-      <mat-cell
-        *matCellDef="let row"
-      >
+      <mat-cell *matCellDef="let row">
         <!-- if you try to add style to cell without removing the flex grow of columns layout breaks completly -->
         <!-- [style.padding]="column.cellPadding()" -->
-        @if(!isInEdit() || !column.editable()) {
+        @if (isInEdit() && column.editable() && row().__rowMetadata.inEdit()) {
+          <ng-container
+            *ngTemplateOutlet="
+              column.cellEditTemplate;
+              context: {
+                $implicit: row,
+                field: column.field(),
+              }
+            "
+          ></ng-container>
+        } @else {
           <ng-container
             *ngTemplateOutlet="
               column.cellTemplate;
@@ -57,17 +65,6 @@
               }
             "
           ></ng-container>
-        } @else {
-          <ng-container
-            *ngTemplateOutlet="
-              column.cellEditTemplate;
-              context: {
-                $implicit: row,
-                field: column.field()
-              }
-            "
-          ></ng-container>
-
         }
       </mat-cell>
     </ng-container>
@@ -84,3 +81,4 @@
   [attr.aria-label]="'common.pagination.selectPage'"
   (page)="onPageChange($event)"
 ></mat-paginator>
+
