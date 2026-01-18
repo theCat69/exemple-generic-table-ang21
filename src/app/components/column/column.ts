@@ -4,10 +4,13 @@ import {
   Component,
   ContentChild,
   input,
+  model,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { SimpleValue } from '../../types/table-types';
+import { SimpleInput } from '../forms/simple-input/simple-input';
+import { FieldTree, FormField, FormValueControl } from '@angular/forms/signals';
 
 /**
  * Column component
@@ -20,6 +23,7 @@ import { SimpleValue } from '../../types/table-types';
   selector: 'app-column',
   templateUrl: './column.html',
   styleUrl: './column.scss',
+  imports: [SimpleInput, FormField],
   host: {
     class: 'simple-column cdk-visually-hidden',
     '[attr.ariaHidden]': 'true',
@@ -59,13 +63,19 @@ export class Column<T> {
 
   width = input<string>();
 
+  field = input<FieldTree<SimpleValue, string>>();
+
   @ContentChild('cell', { static: true })
   private _cellTemplate?: TemplateRef<{ $implicit: T }>;
+  @ContentChild('cellEdit', { static: true })
+  private _cellEditTemplate?: TemplateRef<{ $implicit: T }>;
   @ContentChild('cellHeader', { static: true })
   private _headerTemplate?: TemplateRef<object>;
 
   @ViewChild('cellDefault', { static: true })
   private _defaultCellTemplate?: TemplateRef<{ $implicit: T }>;
+  @ViewChild('cellEditDefault', { static: true })
+  private _defaultCellEditTemplate?: TemplateRef<{ $implicit: T }>;
   @ViewChild('cellHeaderDefault', { static: true })
   private _defaultHeaderTemplate?: TemplateRef<object>;
 
@@ -87,5 +97,15 @@ export class Column<T> {
    * */
   get cellTemplate(): TemplateRef<object> | undefined {
     return this._cellTemplate ?? this._defaultCellTemplate;
+  }
+
+  /**
+   * Overridable getter for non header cells template.
+   * This will be projected into table non header cells if not undefined
+   *
+   * @return TemplateRef of the cellTemplate if present
+   * */
+  get cellEditTemplate(): TemplateRef<object> | undefined {
+    return this._cellEditTemplate ?? this._defaultCellEditTemplate;
   }
 }

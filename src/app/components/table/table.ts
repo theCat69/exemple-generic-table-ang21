@@ -22,6 +22,7 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { TableInlineSort } from '../../services/table-inline-sort';
 import { ColumnValueAccessor, toSignalArrayWithRowMetada } from '../../types/table-types';
 import { TableToolbar } from '../table-toolbar/table-toolbar';
+import { Schema, schema } from '@angular/forms/signals';
 
 export type Behavior = 'inline' | 'event';
 export interface SortEvent<T> {
@@ -100,7 +101,8 @@ export class Table<T extends object> implements AfterContentInit {
    */
   sortEvent = output<SortEvent<T>>();
 
-  private isInEdit = signal(false);
+  isInEdit = signal(false);
+  formModel = model<T>();
 
   @ContentChildren(Column)
   private readonly _columns!: QueryList<Column<T>>;
@@ -162,6 +164,9 @@ export class Table<T extends object> implements AfterContentInit {
   activateEdit(elem: T) {
     console.log('edit mode');
     console.log('elem', elem);
+    this.formModel.update(() => {
+      return { ...elem }
+    });
     this.isInEdit.set(true);
   }
 

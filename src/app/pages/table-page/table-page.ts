@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, WritableSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { EditButtonTray } from '../../components/cell-actions/edit-button-tray/edit-button-tray';
@@ -7,6 +7,7 @@ import { PredefinedTemplate } from '../../components/predefined-template/predefi
 import { TableToolbar } from '../../components/table-toolbar/table-toolbar';
 import { Table } from '../../components/table/table';
 import { WithRowMetadata, restoreOriginalValues } from '../../types/table-types';
+import { form, required, schema, min, maxLength, FieldTree } from '@angular/forms/signals';
 
 export interface PeriodicElement {
   name: string;
@@ -116,6 +117,31 @@ export class TablePage {
       },
     },
   ];
+
+  perdiocElementModel = signal<PeriodicElement>({
+    position: 0,
+    name: '',
+    weight: 0.00,
+    symbol: '',
+    subElemnt: {
+      subValue: ''
+    }
+  });
+
+  formSchema = schema<PeriodicElement>((schemaPath) => {
+    required(schemaPath.position);
+    required(schemaPath.name);
+    required(schemaPath.symbol);
+    maxLength(schemaPath.symbol, 2);
+    min(schemaPath.position, 1)
+    min(schemaPath.weight, 0.00)
+  });
+
+  formTree = form(this.perdiocElementModel, this.formSchema);
+
+  submit(event: Event) {
+    event.preventDefault();
+  }
 
   subElemntAccessor(element: PeriodicElement) {
     return element.subElemnt.subValue;

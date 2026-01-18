@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { email, debounce, form, FormField, required, submit, min, max, schema } from '@angular/forms/signals';
+import { email, debounce, form, FormField, required, submit, min, max, schema, maxLength } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { SimpleInput } from '../../components/forms/simple-input/simple-input';
 import { NumberInput } from '../../components/forms/number-input/number-input';
@@ -42,6 +42,8 @@ export class FormPage {
     required(schemaPath.age, { message: 'Age required' });
     min(schemaPath.age, 0);
     max(schemaPath.age, 150);
+    required(schemaPath.name, { message: 'Name required' });
+    maxLength(schemaPath.name, 12, { message: 'Name max 12 chars' });
   })
 
   formTree = form(this.formModel, this.formSchema);

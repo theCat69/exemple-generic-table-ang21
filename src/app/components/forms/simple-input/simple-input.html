@@ -1,4 +1,31 @@
-<input
-  [value]="value()"
-  (input)="value.set($event.target.value)"
-/>
+@if (!hidden()) {
+  <mat-form-field>
+    @if (label()) {
+      <mat-label>{{ label() }}</mat-label>
+    }
+    <input
+      matInput
+      type="text"
+      [value]="value()"
+      (input)="value.set($event.target.value)"
+      placeholder="{{ placeholder() }}"
+      [required]="required()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      (blur)="touched.set(true)"
+    />
+    @if (invalid() && touched()) {
+      <mat-error>
+        @for(error of errors(); track error.message) {
+          {{ error.message }}
+        }
+      </mat-error>
+    }
+    @if (disabled() && disabledReasons().length > 0) {
+      @for (reason of disabledReasons(); track reason) {
+        {{ reason.message }}
+      }
+    }
+  </mat-form-field>
+}
+

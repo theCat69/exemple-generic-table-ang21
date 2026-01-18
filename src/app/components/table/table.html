@@ -45,6 +45,7 @@
       >
         <!-- if you try to add style to cell without removing the flex grow of columns layout breaks completly -->
         <!-- [style.padding]="column.cellPadding()" -->
+        @if(!isInEdit() || !column.editable()) {
           <ng-container
             *ngTemplateOutlet="
               column.cellTemplate;
@@ -56,6 +57,18 @@
               }
             "
           ></ng-container>
+        } @else {
+          <ng-container
+            *ngTemplateOutlet="
+              column.cellEditTemplate;
+              context: {
+                $implicit: row,
+                field: column.field()
+              }
+            "
+          ></ng-container>
+
+        }
       </mat-cell>
     </ng-container>
   }

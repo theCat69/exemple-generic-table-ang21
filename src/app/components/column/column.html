@@ -12,6 +12,12 @@
   }
   </div>
 </ng-template>
-<ng-template #cellEditDefault>
-
+<ng-template #cellEditDefault
+  let-row
+  let-field="field"
+>
+  <app-simple-input
+    [formField]="field"
+    label="label de ouf"
+  />
 </ng-template>
